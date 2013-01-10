@@ -41,7 +41,7 @@
 #import "UIScreen.h"
 #import "UIColor+UIPrivate.h"
 #import "UIColorRep.h"
-#import <QuartzCore/CALayer.h>
+#import <QuartzCore/QuartzCore.h>
 
 NSString *const UIViewFrameDidChangeNotification = @"UIViewFrameDidChangeNotification";
 NSString *const UIViewBoundsDidChangeNotification = @"UIViewBoundsDidChangeNotification";
@@ -839,10 +839,19 @@ static BOOL _animationsEnabled = YES;
 {
 }
 
+- (void)layoutSublayersOfLayer:(CALayer *)layer {
+    
+}
+
 - (void)_layoutSubviews
 {
     [self _updateAppearanceIfNeeded];
     [[self _viewController] viewWillLayoutSubviews];
+    
+    [CATransaction begin];
+    [CATransaction disableActions];
+    [self layoutSublayersOfLayer:self.layer];
+    [CATransaction commit];
     [self layoutSubviews];
     [[self _viewController] viewDidLayoutSubviews];
 }
