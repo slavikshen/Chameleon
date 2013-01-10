@@ -320,6 +320,7 @@
 				INFOPLIST_FILE = "BigApple-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = BigApple;
+				SDKROOT = macosx;
 			};
 			name = Debug;
 		};
@@ -339,6 +340,7 @@
 				INFOPLIST_FILE = "BigApple-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				PRODUCT_NAME = BigApple;
+				SDKROOT = macosx;
 			};
 			name = Release;
 		};
