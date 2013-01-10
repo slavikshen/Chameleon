@@ -119,7 +119,7 @@ static UIColor *ClearColor = nil;
 + (UIColor *)purpleColor		{ return PurpleColor ?: (PurpleColor = [[self alloc] initWithNSColor:[NSColor purpleColor]]); }
 + (UIColor *)brownColor			{ return BrownColor ?: (BrownColor = [[self alloc] initWithNSColor:[NSColor brownColor]]); }
 + (UIColor *)clearColor			{ return ClearColor ?: (ClearColor = [[self alloc] initWithNSColor:[NSColor clearColor]]); }
-
++ (UIColor *) darkTextColor { return [self darkGrayColor];}
 - (id)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha
 {
     return [self initWithNSColor:[NSColor colorWithDeviceWhite:white alpha:alpha]];
