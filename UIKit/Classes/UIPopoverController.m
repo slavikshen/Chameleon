@@ -124,8 +124,9 @@ static NSPoint PopoverWindowOrigin(NSWindow *inWindow, NSRect fromRect, NSSize p
 @end
 
 @implementation UIPopoverController
-@synthesize delegate=_delegate, contentViewController=_contentViewController, passthroughViews=_passthroughViews;
+@synthesize delegate=_delegate, contentViewController=_contentViewController, passthroughViews=_passthroughViews, popoverContentSize = _popoverContentSize;
 @synthesize popoverArrowDirection=_popoverArrowDirection;
+@synthesize popoverBackgroundViewClass = _popoverBackgroundViewClass;
 
 - (id)init
 {

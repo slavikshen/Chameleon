@@ -54,11 +54,14 @@ typedef NSUInteger UIPopoverArrowDirection;
     NSArray *_passthroughViews;
     UIPopoverArrowDirection _popoverArrowDirection;
 
+    CGSize _popoverContentSize;
     UIPopoverView *_popoverView;
     id _popoverWindow;
     id _overlayWindow;
     
     BOOL _isDismissing;
+    
+    Class _popoverBackgroundViewClass;
     
     __unsafe_unretained id _delegate;
     struct {
@@ -80,5 +83,7 @@ typedef NSUInteger UIPopoverArrowDirection;
 @property (nonatomic, readonly, getter=isPopoverVisible) BOOL popoverVisible;
 @property (nonatomic, copy) NSArray *passthroughViews;
 @property (nonatomic, readonly) UIPopoverArrowDirection popoverArrowDirection;
+@property (nonatomic) CGSize popoverContentSize;
+@property (nonatomic, readwrite, retain) Class popoverBackgroundViewClass;
 
 @end
