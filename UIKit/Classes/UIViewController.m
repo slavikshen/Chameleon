@@ -47,6 +47,15 @@
 @synthesize modalTransitionStyle=_modalTransitionStyle, hidesBottomBarWhenPushed=_hidesBottomBarWhenPushed;
 @synthesize searchDisplayController=_searchDisplayController, tabBarItem=_tabBarItem, tabBarController=_tabBarController;
 
+- (UIViewController *) presentedViewController {
+    return _parentViewController;
+}
+
+- (UIViewController *) presentingViewController
+{
+    return _modalViewController;
+}
+
 - (id)init
 {
     return [self initWithNibName:nil bundle:nil];

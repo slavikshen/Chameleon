@@ -69,6 +69,7 @@ typedef enum {
 
     UITabBarItem *_tabBarItem;
     UITabBarController *_tabBarController;
+    
 }
 
 - (id)initWithNibName:(NSString *)nibName bundle:(NSBundle *)nibBundle;	// won't load a nib no matter what you do!
@@ -100,6 +101,8 @@ typedef enum {
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation duration:(NSTimeInterval)duration;
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation;
 
+- (UIViewController *) presentingViewController;
+- (UIViewController *) presentedViewController;
 
 @property (nonatomic, readonly, copy) NSString *nibName;		// always returns nil
 @property (nonatomic, readonly, retain) NSBundle *nibBundle;	// always returns nil
