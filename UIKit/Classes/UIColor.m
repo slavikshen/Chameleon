@@ -120,6 +120,7 @@ static UIColor *ClearColor = nil;
 + (UIColor *)brownColor			{ return BrownColor ?: (BrownColor = [[self alloc] initWithNSColor:[NSColor brownColor]]); }
 + (UIColor *)clearColor			{ return ClearColor ?: (ClearColor = [[self alloc] initWithNSColor:[NSColor clearColor]]); }
 + (UIColor *) darkTextColor { return [self darkGrayColor];}
++ (UIColor *) lightTextColor { return [self lightGrayColor];}
 - (id)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha
 {
     return [self initWithNSColor:[NSColor colorWithDeviceWhite:white alpha:alpha]];
@@ -260,6 +261,13 @@ static UIColor *ClearColor = nil;
     }
     UIColor* color = (UIColor*) object;    
     return CGColorEqualToColor(self.CGColor, color.CGColor);
+}
+
+- (BOOL)getHue:(CGFloat *)hue saturation:(CGFloat *)saturation brightness:(CGFloat *)brightness alpha:(CGFloat *)alpha {
+    
+    NSColor * c = [NSColor colorWithCGColor:self.CGColor];
+    [c getHue:hue saturation:saturation brightness:brightness alpha:alpha];
+    return YES;
 }
 
 @end

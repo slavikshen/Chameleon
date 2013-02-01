@@ -58,6 +58,7 @@
 + (UIColor *)brownColor;
 + (UIColor *)clearColor;
 + (UIColor *)darkTextColor;
++ (UIColor *)lightTextColor;
 
 - (id)initWithWhite:(CGFloat)white alpha:(CGFloat)alpha;
 - (id)initWithHue:(CGFloat)hue saturation:(CGFloat)saturation brightness:(CGFloat)brightness alpha:(CGFloat)alpha;
@@ -70,6 +71,8 @@
 - (void)set;
 - (void)setFill;
 - (void)setStroke;
+
+- (BOOL)getHue:(CGFloat *)hue saturation:(CGFloat *)saturation brightness:(CGFloat *)brightness alpha:(CGFloat *)alpha;
 
 @property (nonatomic, readonly) CGColorRef CGColor;
 
