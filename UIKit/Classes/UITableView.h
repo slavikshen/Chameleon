@@ -98,6 +98,7 @@ typedef enum {
     UITableViewCellSeparatorStyle _separatorStyle;
     UIView *_tableHeaderView;
     UIView *_tableFooterView;
+    UIView *_backgroundView;
     BOOL _allowsSelection;
     BOOL _allowsSelectionDuringEditing;
     BOOL _editing;
@@ -181,5 +182,6 @@ typedef enum {
 @property (nonatomic, getter=isEditing) BOOL editing;
 @property (nonatomic) CGFloat sectionHeaderHeight;
 @property (nonatomic) CGFloat sectionFooterHeight;
+@property (nonatomic, retain) UIView * backgroundView;
 
 @end
