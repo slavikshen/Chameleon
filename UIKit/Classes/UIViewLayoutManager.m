@@ -28,7 +28,7 @@
  */
 
 #import "UIViewLayoutManager.h"
-#import <QuartzCore/CALayer.h>
+#import <QuartzCore/QuartzCore.h>
 #import "UIView+UIPrivate.h"
 
 static UIViewLayoutManager *theLayoutManager = nil;
@@ -49,7 +49,10 @@ static UIViewLayoutManager *theLayoutManager = nil;
 
 - (void)layoutSublayersOfLayer:(CALayer *)theLayer
 {
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
     [[theLayer delegate] _layoutSubviews];
+    [CATransaction commit];
 }
 
 @end

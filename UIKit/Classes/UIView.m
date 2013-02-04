@@ -847,11 +847,7 @@ static BOOL _animationsEnabled = YES;
 {
     [self _updateAppearanceIfNeeded];
     [[self _viewController] viewWillLayoutSubviews];
-    
-    [CATransaction begin];
-    [CATransaction disableActions];
     [self layoutSublayersOfLayer:self.layer];
-    [CATransaction commit];
     [self layoutSubviews];
     [[self _viewController] viewDidLayoutSubviews];
 }
