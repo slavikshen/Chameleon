@@ -231,7 +231,11 @@ const float UIScrollViewDecelerationRateFast = 0.99;
 
 - (CGPoint)_confinedContentOffset:(CGPoint)contentOffset
 {
-    const CGRect scrollerBounds = UIEdgeInsetsInsetRect(self.bounds, _contentInset);
+    UIEdgeInsets insetFix = UIEdgeInsetsMake(-_contentInset.top,
+                                 -_contentInset.left,
+                                 _contentInset.bottom,
+                                 _contentInset.right);
+    const CGRect scrollerBounds = UIEdgeInsetsInsetRect(self.bounds, insetFix);
     
     if ((_contentSize.width-contentOffset.x) < scrollerBounds.size.width) {
         contentOffset.x = (_contentSize.width - scrollerBounds.size.width);
@@ -258,7 +262,11 @@ const float UIScrollViewDecelerationRateFast = 0.99;
 - (void)_setRestrainedContentOffset:(CGPoint)offset
 {
     const CGPoint confinedOffset = [self _confinedContentOffset:offset];
-    const CGRect scrollerBounds = UIEdgeInsetsInsetRect(self.bounds, _contentInset);
+    UIEdgeInsets insetFix = UIEdgeInsetsMake(-_contentInset.top,
+                                             -_contentInset.left,
+                                             _contentInset.bottom,
+                                             _contentInset.right);
+    const CGRect scrollerBounds = UIEdgeInsetsInsetRect(self.bounds, insetFix);
     
     if (!self.alwaysBounceHorizontal && _contentSize.width <= scrollerBounds.size.width) {
         offset.x = confinedOffset.x;
@@ -332,8 +340,8 @@ const float UIScrollViewDecelerationRateFast = 0.99;
         _contentOffset.y = roundf(theOffset.y);
 
         CGRect bounds = self.bounds;
-        bounds.origin.x = _contentOffset.x+_contentInset.left;
-        bounds.origin.y = _contentOffset.y+_contentInset.top;
+        bounds.origin.x = _contentOffset.x-_contentInset.left;
+        bounds.origin.y = _contentOffset.y-_contentInset.top;
         self.bounds = bounds;
         
         [self _updateScrollers];
