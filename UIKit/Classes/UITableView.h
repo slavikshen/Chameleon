@@ -51,6 +51,8 @@ extern NSString *const UITableViewIndexSearch;
 - (void)tableView:(UITableView *)tableView willBeginEditingRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)tableView:(UITableView *)tableView didEndEditingRowAtIndexPath:(NSIndexPath *)indexPath;
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath;
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 @end
 
 @protocol UITableViewDataSource <NSObject>
@@ -123,6 +125,7 @@ typedef enum {
         unsigned willBeginEditingRowAtIndexPath : 1;
         unsigned didEndEditingRowAtIndexPath : 1;
         unsigned titleForDeleteConfirmationButtonForRowAtIndexPath: 1;
+        unsigned willDisplayCellForRowAtIndexPath: 1;
     } _delegateHas;
     
     struct {
@@ -156,9 +159,11 @@ typedef enum {
 
 - (void)insertSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
 - (void)deleteSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
+- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation;
 
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;	// not implemented
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;	// not implemented
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation;
 
 - (NSIndexPath *)indexPathForSelectedRow;
 - (void)deselectRowAtIndexPath:(NSIndexPath *)indexPath animated:(BOOL)animated;

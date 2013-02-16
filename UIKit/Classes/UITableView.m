@@ -130,6 +130,7 @@ const CGFloat _UITableViewDefaultRowHeight = 43;
     _delegateHas.willBeginEditingRowAtIndexPath = [_delegate respondsToSelector:@selector(tableView:willBeginEditingRowAtIndexPath:)];
     _delegateHas.didEndEditingRowAtIndexPath = [_delegate respondsToSelector:@selector(tableView:didEndEditingRowAtIndexPath:)];
     _delegateHas.titleForDeleteConfirmationButtonForRowAtIndexPath = [_delegate respondsToSelector:@selector(tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:)];
+    _delegateHas.willDisplayCellForRowAtIndexPath = [_delegate respondsToSelector:@selector(tableView:willDisplayCell:forRowAtIndexPath:)];
 }
 
 - (void)setRowHeight:(CGFloat)newHeight
@@ -299,6 +300,9 @@ const CGFloat _UITableViewDefaultRowHeight = 43;
                         cell.frame = rowRect;
                         cell.backgroundColor = self.backgroundColor;
                         [cell _setSeparatorStyle:_separatorStyle color:_separatorColor];
+                        if (_delegateHas.willDisplayCellForRowAtIndexPath) {
+                            [_delegate tableView:self willDisplayCell:cell forRowAtIndexPath:indexPath];
+                        }
                         [self addSubview:cell];
                     }
                 }
@@ -704,12 +708,22 @@ const CGFloat _UITableViewDefaultRowHeight = 43;
     [self reloadData];
 }
 
+- (void)reloadSections:(NSIndexSet *)sections withRowAnimation:(UITableViewRowAnimation)animation {
+    
+    [self reloadData];
+}
+
 - (void)insertRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     [self reloadData];
 }
 
 - (void)deleteRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
+{
+    [self reloadData];
+}
+
+- (void)reloadRowsAtIndexPaths:(NSArray *)indexPaths withRowAnimation:(UITableViewRowAnimation)animation
 {
     [self reloadData];
 }
