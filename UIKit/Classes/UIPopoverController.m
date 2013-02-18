@@ -205,13 +205,20 @@ static NSPoint PopoverWindowOrigin(NSWindow *inWindow, NSRect fromRect, NSSize p
         [_overlayWindow setContentView:popoverOverlayNSView];
         [_overlayWindow setIgnoresMouseEvents:NO];
         [_overlayWindow setOpaque:NO];
+        
         [(NSWindow *)_overlayWindow setBackgroundColor:[NSColor clearColor]];
+        
         [_overlayWindow setFrameOrigin:windowFrame.origin];
         [viewNSWindow addChildWindow:_overlayWindow ordered:NSWindowAbove];
 
         // now build the actual popover view which represents the popover's chrome, and since it's a UIView, we need to build a UIKitView 
         // as well to put it in our NSWindow...
-        _popoverView = [[UIPopoverView alloc] initWithContentView:_contentViewController.view size:_contentViewController.contentSizeForViewInPopover];
+        CGSize popviewSize = self.popoverContentSize;
+        if (popviewSize.height == 0.0 || popviewSize.width == 0.0) {
+            popviewSize = _contentViewController.contentSizeForViewInPopover;
+        }
+        _popoverView = [[UIPopoverView alloc] initWithContentView:_contentViewController.view
+                                                             size:popviewSize];
 
         // this prevents a visible flash from sometimes occuring due to the fact that the window is created and added as a child before it has the
         // proper origin set. this means it it ends up flashing at the bottom left corner of the screen sometimes before it
@@ -275,6 +282,9 @@ static NSPoint PopoverWindowOrigin(NSWindow *inWindow, NSRect fromRect, NSSize p
             _popoverView.alpha = 1.f;
         }];
     }
+    
+    // make sure that the popover is not released when visible
+    [self retain];
 }
 
 - (void)presentPopoverFromBarButtonItem:(UIBarButtonItem *)item permittedArrowDirections:(UIPopoverArrowDirection)arrowDirections animated:(BOOL)animated
@@ -328,6 +338,7 @@ static NSPoint PopoverWindowOrigin(NSWindow *inWindow, NSRect fromRect, NSSize p
 - (void)_closePopoverWindowIfPossible
 {
     if (!_isDismissing && [self isPopoverVisible]) {
+
         const BOOL shouldDismiss = _delegateHas.popoverControllerShouldDismissPopover? [_delegate popoverControllerShouldDismissPopover:self] : YES;
 
         if (shouldDismiss) {
@@ -337,6 +348,14 @@ static NSPoint PopoverWindowOrigin(NSWindow *inWindow, NSRect fromRect, NSSize p
                 [_delegate popoverControllerDidDismissPopover:self];
             }
         }
+        
+        double delayInSeconds = 0.1;
+        __block UIPopoverController* s = self;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [s release];
+        });
+        
     }
 }
 

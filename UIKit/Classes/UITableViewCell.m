@@ -128,6 +128,29 @@ extern CGFloat _UITableViewDefaultRowHeight;
         textRect.size = CGSizeMake(MAX(0,contentFrame.size.width-textRect.origin.x-padding),contentFrame.size.height);
         _textLabel.frame = textRect;
     }
+    
+    if (_style == UITableViewCellStyleValue1) {
+        const CGFloat padding = 5;
+        
+        const BOOL showImage = (_imageView.image != nil);
+        const CGFloat imageWidth = (showImage? 30:0);
+        
+        _imageView.frame = CGRectMake(padding,0,imageWidth,contentFrame.size.height);
+        
+        CGRect textRect;
+        textRect.origin = CGPointMake(padding+imageWidth+padding,0);
+        CGFloat textLabelWidth = (contentFrame.size.width-textRect.origin.x-padding*2)*2/3;
+        textRect.size = CGSizeMake(MAX(0, textLabelWidth),contentFrame.size.height);
+        _textLabel.frame = textRect;
+        
+        const BOOL showDetail = (_detailTextLabel != nil);
+        if (showDetail) {
+            textRect.origin = CGPointMake(contentFrame.size.width-textLabelWidth/2-padding, 0);
+            textRect.size = CGSizeMake(MAX(0, textLabelWidth/2),contentFrame.size.height);
+            _detailTextLabel.frame = textRect;
+            _detailTextLabel.textAlignment = UITextAlignmentRight;
+        }
+    }
 }
 
 - (UIView *)contentView
@@ -166,6 +189,21 @@ extern CGFloat _UITableViewDefaultRowHeight;
     }
     
     return _textLabel;
+}
+
+- (UILabel *)detailTextLabel
+{
+    if (!_detailTextLabel) {
+        _detailTextLabel = [[UILabel alloc] init];
+        _detailTextLabel.backgroundColor = [UIColor clearColor];
+        _detailTextLabel.textColor = [UIColor darkTextColor];
+        _detailTextLabel.highlightedTextColor = [UIColor whiteColor];
+        _detailTextLabel.font = [UIFont boldSystemFontOfSize:14];
+        [self.contentView addSubview:_detailTextLabel];
+        [self layoutIfNeeded];
+    }
+    
+    return _detailTextLabel;
 }
 
 - (void)_setSeparatorStyle:(UITableViewCellSeparatorStyle)theStyle color:(UIColor *)theColor
