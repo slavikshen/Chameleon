@@ -32,6 +32,7 @@
  * OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+#import <UIKit/UIKit.h>
 
 @protocol MFMessageComposeViewControllerDelegate;
 
@@ -42,7 +43,7 @@ enum MessageComposeResult {
 };
 typedef enum MessageComposeResult MessageComposeResult;
 
-@interface MFMessageComposeViewController : NSObject {
+@interface MFMessageComposeViewController : UIViewController {
   __unsafe_unretained id<MFMessageComposeViewControllerDelegate> _messageComposeDelegate;
   NSArray *_recipients;
   NSString *_body;
