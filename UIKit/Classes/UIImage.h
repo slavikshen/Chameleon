@@ -29,6 +29,8 @@
 
 #import <Foundation/Foundation.h>
 
+@class UIColor;
+
 typedef enum {
     UIImageOrientationUp,
     UIImageOrientationDown,   // 180 deg rotation
