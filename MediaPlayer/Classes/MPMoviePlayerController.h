@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MPMediaPlayback.h"
+#import <MediaPlayer/MediaPlayer.h>
+#import <MediaPlayer/MPMediaPlayback.h>
 
 #import <QTKit/QTKit.h>
 
@@ -80,6 +81,17 @@ extern NSString *const MPMovieDurationAvailableNotification;
 @private
     UIInternalMovieView *movieView;
     
+    UIView * _view;
+    MPMovieLoadState _loadState;
+    NSURL * _contentURL;
+    MPMovieControlStyle _controlStyle;
+    MPMovieSourceType _movieSourceType;
+    UIView * _backgroundView;
+    MPMoviePlaybackState _playbackState;
+    MPMovieRepeatMode _repeatMode;
+    BOOL shouldAutoplay;
+    MPMovieScalingMode _scalingMode;
+@protected
     QTMovie *movie;
 }
 @property (nonatomic, readonly) UIView *view;

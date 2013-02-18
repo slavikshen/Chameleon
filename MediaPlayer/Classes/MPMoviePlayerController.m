@@ -24,13 +24,46 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 @synthesize contentURL=_contentURL;
 @synthesize controlStyle=_controlStyle;
 @synthesize movieSourceType=_movieSourceType;
-@synthesize backgroundView;
+@synthesize backgroundView=_backgroundView;
 @synthesize playbackState=_playbackState;
 @synthesize repeatMode=_repeatMode;
 @synthesize shouldAutoplay;
 @synthesize scalingMode=_scalingMode;
 
-
+- (void) setContentURL:(NSURL *)contentURL {
+    if (contentURL) {
+        [_contentURL release];
+        _contentURL = nil;
+    }
+    
+    _contentURL = contentURL;
+    
+    _loadState = MPMovieLoadStateUnknown;
+    _controlStyle = MPMovieControlStyleDefault;
+    _movieSourceType = MPMovieSourceTypeUnknown;
+    _playbackState = MPMoviePlaybackStateStopped;
+    _repeatMode = MPMovieRepeatModeNone;
+    
+    NSError *error = nil;
+    QTMovie * movieNew = [[QTMovie alloc] initWithURL: _contentURL
+                                   error: &error];
+    
+    UIInternalMovieView * movieViewNew = [[UIInternalMovieView alloc] initWithMovie: movieNew];
+    movieViewNew.scalingMode = _scalingMode;
+    
+    if (movieView) {
+        UIView * superview = movieView.superview;
+        [movieView removeFromSuperview];
+        [movieView release];
+        [movie release];
+        
+        movie = movieNew;
+        movieViewNew.frame = movieView.frame;
+        movieView = movieViewNew;
+        
+        [superview addSubview:movieView];
+    }
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -210,6 +243,10 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
+    [movieView release];
+    [movie stop];
+    [movie invalidate];
+    [movie release];
     [_view release];
     [super dealloc];
 }
@@ -222,7 +259,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)play
 {
-    [movie play];
+    [movie autoplay];
     _playbackState = MPMoviePlaybackStatePlaying;
 }
 

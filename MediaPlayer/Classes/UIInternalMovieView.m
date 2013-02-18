@@ -7,7 +7,7 @@
 //
 
 #import "UIInternalMovieView.h"
-
+#import <UIKit/UIViewAdapter.h>
 
 @implementation UIInternalMovieView
 
@@ -21,6 +21,7 @@
 {
     _scalingMode = scalingMode;
     
+    CALayer * movieLayer = _qtMovieView.layer;
     switch (scalingMode)
     {
         case MPMovieScalingModeNone:
@@ -51,9 +52,26 @@
     {
         self.movie = movie;
         
-        movieLayer = [[QTMovieLayer alloc] initWithMovie: movie];
+        _qtMovieView = [[QTMovieView alloc] initWithFrame:self.bounds];
+        [_qtMovieView setWantsLayer:YES];
+        [_qtMovieView setMovie:movie];
+        [_qtMovieView setControllerVisible:YES];
+        [_qtMovieView setPreservesAspectRatio:NO];
+        [_qtMovieView setFillColor:[NSColor blackColor]];
+        [_qtMovieView setEditable:NO];
+        [_qtMovieView setShowsResizeIndicator:YES];
+        [_qtMovieView setStepButtonsVisible:NO];
+        [_qtMovieView setVolumeButtonVisible:NO];
+        [_qtMovieView setHotSpotButtonVisible:NO];
+        [_qtMovieView setCustomButtonVisible:NO];
         
-        [self.layer addSublayer: movieLayer];
+        _adaptorView = [[UIViewAdapter alloc] initWithNSView:_qtMovieView];
+//        _adaptorView.layer.borderWidth = 1;
+//        _adaptorView.layer.borderColor = [UIColor redColor].CGColor;
+        [self addSubview:_adaptorView];
+//        movieLayer = _qtMovieView.layer;
+//        [self.layer addSublayer: movieLayer];
+        
     }
     
     return self;
@@ -64,6 +82,8 @@
 //
 - (void)dealloc
 {
+    [_adaptorView release];
+    [_qtMovieView release];
     [_movie release];
     [super dealloc];
 }
@@ -74,8 +94,11 @@
 //
 - (void)setFrame:(CGRect)frame
 {
+    NSLog(@"movie frame set to: %@", NSStringFromCGRect(frame));
     [super setFrame: frame];
-    [movieLayer setFrame: frame];
+    
+    [_adaptorView setFrame:frame];
+    [_qtMovieView setFrame:frame];
 }
 
 @end
