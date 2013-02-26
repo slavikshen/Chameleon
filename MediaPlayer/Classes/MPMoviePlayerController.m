@@ -52,16 +52,22 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
     movieViewNew.scalingMode = _scalingMode;
     
     if (movieView) {
+        UIInternalMovieView * oldMovieView = movieView;
+        QTMovie * oldMovie = movie;
+        
         UIView * superview = movieView.superview;
         [movieView removeFromSuperview];
-        [movieView release];
-        [movie release];
         
         movie = movieNew;
         movieViewNew.frame = movieView.frame;
         movieView = movieViewNew;
         
         [superview addSubview:movieView];
+        
+        
+        [oldMovieView release];
+        [oldMovie release];
+
     }
 }
 
