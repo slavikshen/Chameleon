@@ -56,8 +56,8 @@
         [_qtMovieView setWantsLayer:YES];
         [_qtMovieView setMovie:movie];
         [_qtMovieView setControllerVisible:YES];
-        [_qtMovieView setPreservesAspectRatio:NO];
-        [_qtMovieView setFillColor:[NSColor blackColor]];
+        [_qtMovieView setPreservesAspectRatio:YES];
+        [_qtMovieView setFillColor:[NSColor clearColor]];
         [_qtMovieView setEditable:NO];
         [_qtMovieView setShowsResizeIndicator:YES];
         [_qtMovieView setStepButtonsVisible:NO];
