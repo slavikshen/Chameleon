@@ -51,18 +51,18 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
     UIInternalMovieView * movieViewNew = [[UIInternalMovieView alloc] initWithMovie: movieNew];
     movieViewNew.scalingMode = _scalingMode;
     
-    if (movieView) {
-        UIInternalMovieView * oldMovieView = movieView;
-        QTMovie * oldMovie = movie;
+    if (_movieView) {
+        UIInternalMovieView * oldMovieView = _movieView;
+        QTMovie * oldMovie = _movie;
         
-        UIView * superview = movieView.superview;
-        [movieView removeFromSuperview];
+        UIView * superview = _movieView.superview;
+        [_movieView removeFromSuperview];
         
-        movie = movieNew;
-        movieViewNew.frame = movieView.frame;
-        movieView = movieViewNew;
+        _movie = movieNew;
+        movieViewNew.frame = _movieView.frame;
+        _movieView = movieViewNew;
         
-        [superview addSubview:movieView];
+        [superview addSubview:_movieView];
         
         
         [oldMovieView release];
@@ -76,7 +76,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 - (void)setScalingMode:(MPMovieScalingMode)scalingMode
 {
     _scalingMode = scalingMode;
-    movieView.scalingMode = scalingMode;
+    _movieView.scalingMode = scalingMode;
 }
 
 
@@ -85,7 +85,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 - (void)setRepeatMode:(MPMovieRepeatMode)repeatMode
 {
     _repeatMode = repeatMode;
-    [movie setAttribute: [NSNumber numberWithBool: repeatMode == MPMovieRepeatModeOne]
+    [_movie setAttribute: [NSNumber numberWithBool: repeatMode == MPMovieRepeatModeOne]
                  forKey: QTMovieLoopsAttribute];
 }
 
@@ -94,7 +94,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (NSTimeInterval)duration
 {
-    QTTime time = [movie duration];
+    QTTime time = [_movie duration];
     NSTimeInterval interval;
     
     if (QTGetTimeInterval(time, &interval))
@@ -108,7 +108,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (UIView*)view
 {
-    return movieView;
+    return _movieView;
 }
 
 
@@ -117,7 +117,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (MPMovieLoadState)loadState
 {    
-    NSNumber* loadState = [movie attributeForKey: QTMovieLoadStateAttribute];        
+    NSNumber* loadState = [_movie attributeForKey: QTMovieLoadStateAttribute];
     
     switch ([loadState intValue]) {
         case QTMovieLoadStateError:            
@@ -179,7 +179,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)didEndOccurred: (NSNotification*)notification
 {
-    if (notification.object != movie)
+    if (notification.object != _movie)
         return;
 
     _playbackState = MPMoviePlaybackStateStopped;
@@ -198,7 +198,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)loadStateChangeOccurred: (NSNotification*)notification
 {
-    if (notification.object != movie)
+    if (notification.object != _movie)
         return;
         
     [[NSNotificationCenter defaultCenter] postNotificationName: MPMoviePlayerLoadStateDidChangeNotification
@@ -222,10 +222,10 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
         _repeatMode = MPMovieRepeatModeNone;
         
         NSError *error = nil;
-        movie = [[QTMovie alloc] initWithURL: url
+        _movie = [[QTMovie alloc] initWithURL: url
                                        error: &error];
         
-        movieView = [[UIInternalMovieView alloc] initWithMovie: movie];
+        _movieView = [[UIInternalMovieView alloc] initWithMovie: _movie];
         
         self.scalingMode = MPMovieScalingModeAspectFit;
         
@@ -249,10 +249,10 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver: self];
-    [movieView release];
-    [movie stop];
-    [movie invalidate];
-    [movie release];
+    [_movieView release];
+    [_movie stop];
+    [_movie invalidate];
+    [_movie release];
     [_view release];
     [super dealloc];
 }
@@ -265,7 +265,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)play
 {
-    [movie autoplay];
+    [_movie autoplay];
     _playbackState = MPMoviePlaybackStatePlaying;
 }
 
@@ -274,7 +274,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)pause
 {
-    [movie stop];
+    [_movie stop];
     _playbackState = MPMoviePlaybackStatePaused;
 }
 
@@ -288,7 +288,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 //
 - (void)stop
 {
-    [movie stop];
+    [_movie stop];
     _playbackState = MPMoviePlaybackStateStopped;
 }
 

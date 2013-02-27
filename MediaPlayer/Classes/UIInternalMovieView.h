@@ -12,18 +12,23 @@
 #import "MPMoviePlayerController.h"
 #import <UIKit/UIViewAdapter.h>
 
+@class QTMovieViewExt;
+
 @interface UIInternalMovieView : UIView {
 @private
 //    CALayer *movieLayer;
     
     UIViewAdapter * _adaptorView;
-    QTMovieView * _qtMovieView;
+    QTMovieViewExt * _qtMovieView;
     QTMovie * _movie;
     MPMovieScalingMode _scalingMode;
 }
+
 @property (nonatomic, retain) QTMovie* movie;
 @property (nonatomic, assign) MPMovieScalingMode scalingMode;
 
 - (id)initWithMovie: (QTMovie*)movie;
 
+- (QTMovieViewExt *) qtMovieView;
+- (UIViewAdapter *) adaptorView;
 @end

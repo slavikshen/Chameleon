@@ -8,6 +8,7 @@
 
 #import "UIInternalMovieView.h"
 #import <UIKit/UIViewAdapter.h>
+#import "QTMovieViewExt.h"
 
 @implementation UIInternalMovieView
 
@@ -52,7 +53,7 @@
     {
         self.movie = movie;
         
-        _qtMovieView = [[QTMovieView alloc] initWithFrame:self.bounds];
+        _qtMovieView = [[QTMovieViewExt alloc] initWithFrame:self.bounds];
         [_qtMovieView setWantsLayer:YES];
         [_qtMovieView setMovie:movie];
         [_qtMovieView setControllerVisible:YES];
@@ -65,6 +66,8 @@
         [_qtMovieView setHotSpotButtonVisible:NO];
         [_qtMovieView setCustomButtonVisible:NO];
         
+        [_qtMovieView setFlipped:YES];
+        
         _adaptorView = [[UIViewAdapter alloc] initWithNSView:_qtMovieView];
 //        _adaptorView.layer.borderWidth = 1;
 //        _adaptorView.layer.borderColor = [UIColor redColor].CGColor;
@@ -75,6 +78,14 @@
     }
     
     return self;
+}
+
+- (QTMovieView *) qtMovieView {
+    return _qtMovieView;
+}
+
+- (UIViewAdapter *)adaptorView {
+    return _adaptorView;
 }
 
 

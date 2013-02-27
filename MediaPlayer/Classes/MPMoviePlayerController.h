@@ -79,7 +79,6 @@ extern NSString *const MPMovieDurationAvailableNotification;
 @interface MPMoviePlayerController : NSObject <MPMediaPlayback> 
 {
 @private
-    UIInternalMovieView *movieView;
     
     UIView * _view;
     MPMovieLoadState _loadState;
@@ -92,7 +91,8 @@ extern NSString *const MPMovieDurationAvailableNotification;
     BOOL shouldAutoplay;
     MPMovieScalingMode _scalingMode;
 @protected
-    QTMovie *movie;
+    QTMovie *_movie;
+    UIInternalMovieView *_movieView;
 }
 @property (nonatomic, readonly) UIView *view;
 @property (nonatomic, readonly) MPMovieLoadState loadState;
