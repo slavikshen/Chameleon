@@ -54,7 +54,7 @@
         self.movie = movie;
         
         _qtMovieView = [[QTMovieViewExt alloc] initWithFrame:self.bounds];
-        [_qtMovieView setWantsLayer:YES];
+        [_qtMovieView setWantsLayer:NO];
         [_qtMovieView setMovie:movie];
         [_qtMovieView setControllerVisible:YES];
         [_qtMovieView setPreservesAspectRatio:YES];
@@ -66,7 +66,20 @@
         [_qtMovieView setHotSpotButtonVisible:NO];
         [_qtMovieView setCustomButtonVisible:NO];
         
-        [_qtMovieView setFlipped:YES];
+        
+        SInt32 major, minor, bugfix;
+        Gestalt(gestaltSystemVersionMajor, &major);
+        Gestalt(gestaltSystemVersionMinor, &minor);
+        Gestalt(gestaltSystemVersionBugFix, &bugfix);
+        
+        NSString *systemVersion = [NSString stringWithFormat:@"%d.%d.%d",
+                                   major, minor, bugfix];
+        NSLog(@"OSX system version detected: %@", systemVersion);
+        
+        [_qtMovieView setFlipped:NO];
+        if (major >= 10 && minor >= 8) {
+            [_qtMovieView setFlipped:YES];
+        }
         
         _adaptorView = [[UIViewAdapter alloc] initWithNSView:_qtMovieView];
 //        _adaptorView.layer.borderWidth = 1;
