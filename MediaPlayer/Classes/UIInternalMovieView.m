@@ -53,7 +53,7 @@
     {
         self.movie = movie;
         
-        _qtMovieView = [[QTMovieViewExt alloc] initWithFrame:self.bounds];
+        _qtMovieView = [[QTMovieViewExt alloc] initWithFrame:NSRectFromCGRect(self.bounds)];
         [_qtMovieView setWantsLayer:NO];
         [_qtMovieView setMovie:movie];
         [_qtMovieView setControllerVisible:YES];
@@ -122,7 +122,7 @@
     [super setFrame: frame];
     
     [_adaptorView setFrame:frame];
-    [_qtMovieView setFrame:frame];
+    [_qtMovieView setFrame:NSRectFromCGRect(frame)];
 }
 
 @end

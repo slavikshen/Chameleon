@@ -8,6 +8,8 @@
 
 #import <QTKit/QTKit.h>
 
+#define QTMovieViewExtNotification_VideoDoubleClicked @"QTMovieViewExtNotification_VideoDoubleClicked"
+
 @interface QTMovieViewExt : QTMovieView {
 @private
     BOOL _flipped;
