@@ -136,7 +136,7 @@
     } else if (event.clickCount == 2) {
         [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:QTMovieViewExtNotification_VideoDoubleClicked object:self]];
     } else {
-        [self performSelector:@selector(playOrStopDelayed) withObject:nil afterDelay:0.3];
+        [self performSelector:@selector(_playOrStopDelayed) withObject:nil afterDelay:0.3];
     }
 }
 
