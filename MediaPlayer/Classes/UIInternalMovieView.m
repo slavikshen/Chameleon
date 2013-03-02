@@ -49,45 +49,29 @@
 //
 - (id)initWithMovie:(QTMovie *)movie
 {
-    if ((self = [super init]) != nil)
+    if ((self = [super init]) )
     {
         self.movie = movie;
         
         _qtMovieView = [[QTMovieViewExt alloc] initWithFrame:NSRectFromCGRect(self.bounds)];
         [_qtMovieView setWantsLayer:NO];
         [_qtMovieView setMovie:movie];
-        [_qtMovieView setControllerVisible:YES];
+        [_qtMovieView setControllerVisible:NO];
         [_qtMovieView setPreservesAspectRatio:YES];
-        [_qtMovieView setFillColor:[NSColor clearColor]];
         [_qtMovieView setEditable:NO];
-        [_qtMovieView setShowsResizeIndicator:YES];
+        [_qtMovieView setShowsResizeIndicator:NO];
         [_qtMovieView setStepButtonsVisible:NO];
-        [_qtMovieView setVolumeButtonVisible:NO];
+        [_qtMovieView setVolumeButtonVisible:YES];
         [_qtMovieView setHotSpotButtonVisible:NO];
         [_qtMovieView setCustomButtonVisible:NO];
-        
-        
-        SInt32 major, minor, bugfix;
-        Gestalt(gestaltSystemVersionMajor, &major);
-        Gestalt(gestaltSystemVersionMinor, &minor);
-        Gestalt(gestaltSystemVersionBugFix, &bugfix);
-        
-        NSString *systemVersion = [NSString stringWithFormat:@"%d.%d.%d",
-                                   major, minor, bugfix];
-        NSLog(@"OSX system version detected: %@", systemVersion);
-        
-        [_qtMovieView setFlipped:NO];
-        if (major >= 10 && minor >= 8) {
-            [_qtMovieView setFlipped:YES];
-        }
+        _qtMovieView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
         _adaptorView = [[UIViewAdapter alloc] initWithNSView:_qtMovieView];
-//        _adaptorView.layer.borderWidth = 1;
-//        _adaptorView.layer.borderColor = [UIColor redColor].CGColor;
+        _adaptorView.frame = self.bounds;
+        _adaptorView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+        _adaptorView.scrollEnabled = NO;
         [self addSubview:_adaptorView];
-//        movieLayer = _qtMovieView.layer;
-//        [self.layer addSublayer: movieLayer];
-        
+
     }
     
     return self;
@@ -112,17 +96,11 @@
     [super dealloc];
 }
 
+- (void)layoutSubviews {
 
+    [super layoutSubviews];
+    _qtMovieView.frame = _adaptorView.frame;
 
-///////////////////////////////////////////////////////////////////////////////
-//
-- (void)setFrame:(CGRect)frame
-{
-    NSLog(@"movie frame set to: %@", NSStringFromCGRect(frame));
-    [super setFrame: frame];
-    
-    [_adaptorView setFrame:frame];
-    [_qtMovieView setFrame:NSRectFromCGRect(frame)];
 }
 
 @end

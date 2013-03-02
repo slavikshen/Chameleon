@@ -11,10 +11,6 @@
 #define QTMovieViewExtNotification_VideoDoubleClicked @"QTMovieViewExtNotification_VideoDoubleClicked"
 
 @interface QTMovieViewExt : QTMovieView {
-@private
-    BOOL _flipped;
 }
-
-@property (nonatomic, getter = isFlipped) BOOL flipped;
 
 @end

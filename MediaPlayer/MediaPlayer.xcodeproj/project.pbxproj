@@ -19,6 +19,15 @@
 		4C16787D13C71FB900814195 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C16787C13C71FB900814195 /* UIKit.framework */; };
 		4C16789F13C7206500814195 /* QTKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C16789E13C7206500814195 /* QTKit.framework */; };
 		4C72FDF613C746E800D3E453 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C72FDF513C746E800D3E453 /* QuartzCore.framework */; };
+		74103F9816E21F880089690C /* QTMovieStateHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 74103F9616E21F880089690C /* QTMovieStateHUD.h */; };
+		74103F9916E21F880089690C /* QTMovieStateHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 74103F9716E21F880089690C /* QTMovieStateHUD.m */; };
+		74103FB016E22E0E0089690C /* chameleon_qtmovie_fast_backward.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FA916E22E0E0089690C /* chameleon_qtmovie_fast_backward.png */; };
+		74103FB116E22E0E0089690C /* chameleon_qtmovie_fast_forward.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAA16E22E0E0089690C /* chameleon_qtmovie_fast_forward.png */; };
+		74103FB216E22E0E0089690C /* chameleon_qtmovie_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAB16E22E0E0089690C /* chameleon_qtmovie_pause.png */; };
+		74103FB316E22E0E0089690C /* chameleon_qtmovie_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAC16E22E0E0089690C /* chameleon_qtmovie_play.png */; };
+		74103FB416E22E0E0089690C /* chameleon_qtmovie_volume-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */; };
+		74103FB516E22E0E0089690C /* chameleon_qtmovie_volume-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */; };
+		74103FB616E22E0E0089690C /* chameleon_qtmovie_volume-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */; };
 		C4CD9B2116DD0893000B25F7 /* QTMovieViewExt.h in Headers */ = {isa = PBXBuildFile; fileRef = C4CD9B1F16DD0893000B25F7 /* QTMovieViewExt.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C4CD9B2216DD0893000B25F7 /* QTMovieViewExt.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CD9B2016DD0893000B25F7 /* QTMovieViewExt.m */; };
 /* End PBXBuildFile section */
@@ -50,7 +59,15 @@
 		4C16787C13C71FB900814195 /* UIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UIKit.framework; sourceTree = SOURCE_ROOT; };
 		4C16789E13C7206500814195 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
 		4C72FDF513C746E800D3E453 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
-		8DC2EF5A0486A6940098B216 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		74103F9616E21F880089690C /* QTMovieStateHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QTMovieStateHUD.h; sourceTree = "<group>"; };
+		74103F9716E21F880089690C /* QTMovieStateHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QTMovieStateHUD.m; sourceTree = "<group>"; };
+		74103FA916E22E0E0089690C /* chameleon_qtmovie_fast_backward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chameleon_qtmovie_fast_backward.png; sourceTree = "<group>"; };
+		74103FAA16E22E0E0089690C /* chameleon_qtmovie_fast_forward.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chameleon_qtmovie_fast_forward.png; sourceTree = "<group>"; };
+		74103FAB16E22E0E0089690C /* chameleon_qtmovie_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chameleon_qtmovie_pause.png; sourceTree = "<group>"; };
+		74103FAC16E22E0E0089690C /* chameleon_qtmovie_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chameleon_qtmovie_play.png; sourceTree = "<group>"; };
+		74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-1.png"; sourceTree = "<group>"; };
+		74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-2.png"; sourceTree = "<group>"; };
+		74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-3.png"; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* MediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C4CD9B1F16DD0893000B25F7 /* QTMovieViewExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QTMovieViewExt.h; path = Classes/QTMovieViewExt.h; sourceTree = "<group>"; };
 		C4CD9B2016DD0893000B25F7 /* QTMovieViewExt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QTMovieViewExt.m; path = Classes/QTMovieViewExt.m; sourceTree = "<group>"; };
@@ -85,9 +102,9 @@
 				4C72FDF513C746E800D3E453 /* QuartzCore.framework */,
 				4C16789E13C7206500814195 /* QTKit.framework */,
 				4C16787C13C71FB900814195 /* UIKit.framework */,
+				74103FA816E22E0E0089690C /* Resources */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				4C16780A13C71DDC00814195 /* Private Classes */,
-				089C1665FE841158C02AAC07 /* Resources */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
 				034768DFFF38A50411DB9C8B /* Products */,
@@ -104,14 +121,6 @@
 				14EFB1BA1211DB5300D19B0C /* Cocoa.framework */,
 			);
 			name = "External Frameworks and Libraries";
-			sourceTree = "<group>";
-		};
-		089C1665FE841158C02AAC07 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				8DC2EF5A0486A6940098B216 /* Info.plist */,
-			);
-			name = Resources;
 			sourceTree = "<group>";
 		};
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
@@ -142,6 +151,8 @@
 			children = (
 				4C16781813C71E6200814195 /* UIInternalMovieView.h */,
 				4C16781913C71E6200814195 /* UIInternalMovieView.m */,
+				74103F9616E21F880089690C /* QTMovieStateHUD.h */,
+				74103F9716E21F880089690C /* QTMovieStateHUD.m */,
 			);
 			name = "Private Classes";
 			sourceTree = "<group>";
@@ -152,6 +163,20 @@
 				4C16787A13C71F8A00814195 /* UIKit.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		74103FA816E22E0E0089690C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				74103FA916E22E0E0089690C /* chameleon_qtmovie_fast_backward.png */,
+				74103FAA16E22E0E0089690C /* chameleon_qtmovie_fast_forward.png */,
+				74103FAB16E22E0E0089690C /* chameleon_qtmovie_pause.png */,
+				74103FAC16E22E0E0089690C /* chameleon_qtmovie_play.png */,
+				74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */,
+				74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */,
+				74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -167,6 +192,7 @@
 				14C25F001211ED4C00622309 /* MPMusicPlayerController.h in Headers */,
 				C4CD9B2116DD0893000B25F7 /* QTMovieViewExt.h in Headers */,
 				4C1677D913C70F1A00814195 /* MPMoviePlayerController.h in Headers */,
+				74103F9816E21F880089690C /* QTMovieStateHUD.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -241,6 +267,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74103FB016E22E0E0089690C /* chameleon_qtmovie_fast_backward.png in Resources */,
+				74103FB116E22E0E0089690C /* chameleon_qtmovie_fast_forward.png in Resources */,
+				74103FB216E22E0E0089690C /* chameleon_qtmovie_pause.png in Resources */,
+				74103FB316E22E0E0089690C /* chameleon_qtmovie_play.png in Resources */,
+				74103FB416E22E0E0089690C /* chameleon_qtmovie_volume-1.png in Resources */,
+				74103FB516E22E0E0089690C /* chameleon_qtmovie_volume-2.png in Resources */,
+				74103FB616E22E0E0089690C /* chameleon_qtmovie_volume-3.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -255,6 +288,7 @@
 				4C1677DA13C70F1A00814195 /* MPMoviePlayerController.m in Sources */,
 				4C16781B13C71E6200814195 /* UIInternalMovieView.m in Sources */,
 				C4CD9B2216DD0893000B25F7 /* QTMovieViewExt.m in Sources */,
+				74103F9916E21F880089690C /* QTMovieStateHUD.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

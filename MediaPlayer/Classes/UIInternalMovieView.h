@@ -31,4 +31,5 @@
 
 - (QTMovieViewExt *) qtMovieView;
 - (UIViewAdapter *) adaptorView;
+
 @end
