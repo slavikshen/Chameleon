@@ -60,6 +60,7 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
         
         _movie = movieNew;
         movieViewNew.frame = _movieView.frame;
+        movieViewNew.autoresizingMask = _movieView.autoresizingMask;
         _movieView = movieViewNew;
         
         [superview addSubview:_movieView];

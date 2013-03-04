@@ -158,7 +158,11 @@
     float rate = [self.movie rate];
     if (rate == 0) {
         [_hud showPlay];
-        [self.movie autoplay];
+//        [self.movie autoplay];
+        [self.movie play];
+        //requested directly from user, so force playing if there is
+        //not enough buffered data(>3s?). autoplay will not start playing on
+        //this case.
     } else {
         [_hud showPause];
         [self.movie stop];
