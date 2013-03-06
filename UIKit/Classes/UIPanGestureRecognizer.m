@@ -31,6 +31,7 @@
 #import "UIGestureRecognizerSubclass.h"
 #import "UITouch+UIPrivate.h"
 #import "UIEvent.h"
+#import "UIView.h"
 
 static UITouch *PanTouch(NSSet *touches)
 {
@@ -129,6 +130,39 @@ static UITouch *PanTouch(NSSet *touches)
             self.state = UIGestureRecognizerStateCancelled;
         }
     }
+}
+
+// pan in subview will prevent the pan in superview
+// might cause the UIScrollView carscade work as not expected as in the iOSs
+
+- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
+{
+    if( [preventedGestureRecognizer isKindOfClass:[self class]] ) {
+        UIView* superview = self.view.superview;
+        UIView* v = preventedGestureRecognizer.view;
+        while( superview ) {
+            if( superview == v ) {
+                return YES;
+            }
+            superview = superview.superview;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
+{
+    if( [preventingGestureRecognizer isKindOfClass:[self class]] ) {
+        UIView* superview = preventingGestureRecognizer.view.superview;
+        UIView* v = self.view;
+        while( superview ) {
+            if( superview == v ) {
+                return YES;
+            }
+            superview = superview.superview;
+        }
+    }
+    return NO;
 }
 
 @end

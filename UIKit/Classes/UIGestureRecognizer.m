@@ -143,8 +143,7 @@
 
     typedef struct { UIGestureRecognizerState fromState, toState; BOOL shouldNotify, shouldReset; } StateTransition;
 
-    #define NumberOfStateTransitions 9
-    static const StateTransition allowedTransitions[NumberOfStateTransitions] = {
+    static const StateTransition allowedTransitions[] = {
         // discrete gestures
         {UIGestureRecognizerStatePossible,		UIGestureRecognizerStateRecognized,     YES,    YES},
         {UIGestureRecognizerStatePossible,		UIGestureRecognizerStateFailed,         NO,     YES},
@@ -156,8 +155,13 @@
         {UIGestureRecognizerStateBegan,			UIGestureRecognizerStateEnded,          YES,    YES},
         {UIGestureRecognizerStateChanged,		UIGestureRecognizerStateChanged,        YES,    NO },
         {UIGestureRecognizerStateChanged,		UIGestureRecognizerStateCancelled,      YES,    YES},
-        {UIGestureRecognizerStateChanged,		UIGestureRecognizerStateEnded,          YES,    YES}
+        {UIGestureRecognizerStateChanged,		UIGestureRecognizerStateEnded,          YES,    YES},
+        // restore state from canceled to possible
+        {UIGestureRecognizerStateCancelled,		UIGestureRecognizerStatePossible,       NO,     NO}
     };
+    
+//    #define NumberOfStateTransitions 9
+    const NSUInteger NumberOfStateTransitions = sizeof(allowedTransitions)/sizeof(StateTransition);
     
     const StateTransition *transition = NULL;
 
@@ -181,6 +185,14 @@
                 // I'm also delaying the reset call (if necessary) just below here.
                 [actionRecord.target performSelector:actionRecord.action withObject:self afterDelay:0];
             }
+        } else {
+            for (UIAction *actionRecord in _registeredActions) {
+                // docs mention that the action messages are sent on the next run loop, so we'll do that here.
+                // note that this means that reset can't happen until the next run loop, either otherwise
+                // the state property is going to be wrong when the action handler looks at it, so as a result
+                // I'm also delaying the reset call (if necessary) just below here.
+                [NSObject cancelPreviousPerformRequestsWithTarget:actionRecord.target selector:actionRecord.action object:self];
+            }
         }
         
         if (transition->shouldReset) {
@@ -198,12 +210,12 @@
 
 - (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
 {
-    return YES;
+    return NO;
 }
 
 - (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-    return YES;
+    return NO;
 }
 
 - (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent*)event

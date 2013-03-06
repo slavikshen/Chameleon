@@ -309,20 +309,42 @@ NSString *const UIKeyboardBoundsUserInfoKey = @"UIKeyboardBoundsUserInfoKey";
     return self.layer.zPosition;
 }
 
+- (void)_handleGestures:(NSSet*)touches withEvent:(UIEvent*)event {
+    
+    NSMutableSet *gestureRecognizers = [NSMutableSet setWithCapacity:0];
+
+    for (UITouch *touch in touches) {
+        [gestureRecognizers addObjectsFromArray:touch.gestureRecognizers];
+    }
+
+    for (UIGestureRecognizer *recognizer in gestureRecognizers) {
+    
+        UIGestureRecognizerState state = recognizer.state;
+        BOOL prevented = NO;
+
+        if( UIGestureRecognizerStatePossible == state ) {
+            for (UIGestureRecognizer *g in gestureRecognizers) {
+                if( g == recognizer ) { continue; }
+                if( [recognizer canBePreventedByGestureRecognizer:g] ) {
+                    prevented = YES;
+                    break;
+                }
+            }
+        }
+        if( !prevented ) {
+            [recognizer _recognizeTouches:touches withEvent:event];
+        }
+    }
+
+}
+
 - (void)sendEvent:(UIEvent *)event
 {
     if (event.type == UIEventTypeTouches) {
         NSSet *touches = [event touchesForWindow:self];
-        NSMutableSet *gestureRecognizers = [NSMutableSet setWithCapacity:0];
-
-        for (UITouch *touch in touches) {
-            [gestureRecognizers addObjectsFromArray:touch.gestureRecognizers];
-        }
-
-        for (UIGestureRecognizer *recognizer in gestureRecognizers) {
-            [recognizer _recognizeTouches:touches withEvent:event];
-        }
-
+        
+        [self _handleGestures:touches withEvent:event];
+ 
         for (UITouch *touch in touches) {
             // normally there'd be no need to retain the view here, but this works around a strange problem I ran into.
             // what can happen is, now that UIView's -removeFromSuperview will remove the view from the active touch

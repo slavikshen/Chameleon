@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import <MediaPlayer/MPMediaPlayback.h>
-
 #import <QTKit/QTKit.h>
 
 enum {
@@ -74,44 +73,41 @@ extern NSString *const MPMoviePlayerPlaybackDidFinishNotification;
 extern NSString *const MPMoviePlayerLoadStateDidChangeNotification;
 extern NSString *const MPMovieDurationAvailableNotification;
 
+extern NSString *const MPMoviePlayerControllerVolumeSetting;
+
 @class UIInternalMovieView;
 
 @interface MPMoviePlayerController : NSObject <MPMediaPlayback> 
 {
 @private
     
-    UIView * _view;
-    MPMovieLoadState _loadState;
     NSURL * _contentURL;
     MPMovieControlStyle _controlStyle;
     MPMovieSourceType _movieSourceType;
-    UIView * _backgroundView;
-    MPMoviePlaybackState _playbackState;
     MPMovieRepeatMode _repeatMode;
-    BOOL shouldAutoplay;
-    MPMovieScalingMode _scalingMode;
-@protected
-    QTMovie *_movie;
-    UIInternalMovieView *_movieView;
+
 }
-@property (nonatomic, readonly) UIView *view;
-@property (nonatomic, readonly) MPMovieLoadState loadState;
-@property (nonatomic, copy) NSURL *contentURL;
-@property (nonatomic) MPMovieControlStyle controlStyle;
-@property (nonatomic) MPMovieSourceType movieSourceType;
+
+@property(nonatomic, readonly) UIView *view;
+@property(nonatomic, readonly) MPMovieLoadState loadState;
+@property(nonatomic, copy) NSURL *contentURL;
+@property(nonatomic) MPMovieControlStyle controlStyle;
+@property(nonatomic) MPMovieSourceType movieSourceType;
+@property(nonatomic, readonly, getter = isFullscreen) BOOL fullscreen;
+@property(nonatomic,retain) UIView* customControllerView;
 
 // A view for customization which is always displayed behind movie content.
-@property(nonatomic, readonly) UIView *backgroundView;
+@property(nonatomic, retain) UIView *backgroundView;
+@property(nonatomic, readonly, assign) MPMoviePlaybackState playbackState;
 
-@property (nonatomic, readonly) MPMoviePlaybackState playbackState;
-@property (nonatomic) MPMovieRepeatMode repeatMode;
+@property(nonatomic) MPMovieRepeatMode repeatMode;
 
 // Indicates if a movie should automatically start playback when it is likely to finish uninterrupted based on e.g. network conditions. Defaults to YES.
 @property(nonatomic) BOOL shouldAutoplay;
 
-@property (nonatomic, readonly) NSTimeInterval duration;
-@property (nonatomic) MPMovieScalingMode scalingMode;
-
+@property(nonatomic, readonly) NSTimeInterval duration;
+@property(nonatomic) MPMovieScalingMode scalingMode;
+@property(nonatomic, readonly) QTMovie* movie;
 
 - (id)initWithContentURL: (NSURL*)url;
 

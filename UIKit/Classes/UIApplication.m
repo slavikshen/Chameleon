@@ -213,7 +213,9 @@ static BOOL TouchIsActive(UITouch *touch)
 
 - (void)endIgnoringInteractionEvents
 {
-    _ignoringInteractionEvents--;
+    if( _ignoringInteractionEvents ) {
+        _ignoringInteractionEvents--;
+    }
 }
 
 - (BOOL)isIgnoringInteractionEvents
