@@ -161,6 +161,14 @@ static UITouch *PanTouch(NSSet *touches)
             }
             superview = superview.superview;
         }
+        
+        UIGestureRecognizerState state = preventingGestureRecognizer.state;
+        if( UIGestureRecognizerStateBegan == state ||
+            UIGestureRecognizerStateChanged == state ||
+            UIGestureRecognizerStateEnded == state ) {
+            return YES;
+        }
+    
     }
     return NO;
 }

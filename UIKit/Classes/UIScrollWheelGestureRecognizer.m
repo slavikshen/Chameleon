@@ -54,35 +54,4 @@
     }
 }
 
-
-//- (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
-//{
-//    if( [preventedGestureRecognizer isKindOfClass:[self class]] ) {
-//        UIView* superview = self.view.superview;
-//        UIView* v = preventedGestureRecognizer.view;
-//        while( superview ) {
-//            if( superview == v ) {
-//                return YES;
-//            }
-//            superview = superview.superview;
-//        }
-//    }
-//    return NO;
-//}
-//
-//- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
-//{
-//    if( [preventingGestureRecognizer isKindOfClass:[self class]] ) {
-//        UIView* superview = preventingGestureRecognizer.view.superview;
-//        UIView* v = self.view;
-//        while( superview ) {
-//            if( superview == v ) {
-//                return YES;
-//            }
-//            superview = superview.superview;
-//        }
-//    }
-//    return NO;
-//}
-
 @end

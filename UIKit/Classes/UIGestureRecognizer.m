@@ -210,12 +210,12 @@
 
 - (BOOL)canPreventGestureRecognizer:(UIGestureRecognizer *)preventedGestureRecognizer
 {
-    return NO;
+    return YES;
 }
 
 - (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-    return NO;
+    return YES;
 }
 
 - (void)ignoreTouch:(UITouch *)touch forEvent:(UIEvent*)event
