@@ -74,7 +74,7 @@
     fullscreenButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     fullscreenButton.frame = fullscreenFrame;
     fullscreenButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    fullscreenButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
+//    fullscreenButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     UIImage* fullscreenIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_fullscreen.png"];
     [fullscreenButton setImage:fullscreenIcon forState:UIControlStateNormal];
     

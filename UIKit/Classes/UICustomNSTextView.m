@@ -87,6 +87,8 @@ static const CGFloat LargeNumberForText = 1.0e7; // Any larger dimensions and th
         
         // this is for a spell checking hack.. see below
         [[self layoutManager] setDelegate:self];
+        // text inset spacing is slightly different with iOS
+        [self setTextContainerInset:NSMakeSize(5, 0)];
     }
     return self;
 }

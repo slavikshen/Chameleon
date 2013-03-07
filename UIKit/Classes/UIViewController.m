@@ -216,19 +216,20 @@
         _modalViewController = [modalViewController retain];
         [_modalViewController _setParentViewController:self];
 
-        UIWindow *window = self.view.window;
         UIView *selfView = self.view;
         UIView *newView = _modalViewController.view;
-
+        
         newView.autoresizingMask = selfView.autoresizingMask;
-        newView.frame = _wantsFullScreenLayout? window.screen.bounds : window.screen.applicationFrame;
+        newView.frame = selfView.frame;
 
-        [window addSubview:newView];
+        [selfView addSubview:newView];
         [_modalViewController viewWillAppear:animated];
 
-        [self viewWillDisappear:animated];
-        selfView.hidden = YES;		// I think the real one may actually remove it, which would mean needing to remember the superview, I guess? Not sure...
-        [self viewDidDisappear:animated];
+// don't send dispear event
+// things should works in the iPad way, more than the iPhone
+//        [self viewWillDisappear:animated];
+//        selfView.hidden = YES;		// I think the real one may actually remove it, which would mean needing to remember the superview, I guess? Not sure...
+//        [self viewDidDisappear:animated];
 
 
         [_modalViewController viewDidAppear:animated];
@@ -250,15 +251,15 @@
             [_modalViewController dismissModalViewControllerAnimated:animated];
         }
         
-        self.view.hidden = NO;
-        [self viewWillAppear:animated];
+//        self.view.hidden = NO;
+//        [self viewWillAppear:animated];
         
         [_modalViewController.view removeFromSuperview];
         [_modalViewController _setParentViewController:nil];
         [_modalViewController autorelease];
         _modalViewController = nil;
 
-        [self viewDidAppear:animated];
+//        [self viewDidAppear:animated];
     } else {
         [self.parentViewController dismissModalViewControllerAnimated:animated];
     }

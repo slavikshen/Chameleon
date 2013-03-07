@@ -35,7 +35,7 @@
 
 - (void)dealloc {
 
-    [self _stopResetHightlight];
+    [self _stopResetHighlight];
     [super dealloc];
 
 }

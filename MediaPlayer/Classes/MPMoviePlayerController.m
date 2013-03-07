@@ -23,6 +23,8 @@ NSString *const MPMovieDurationAvailableNotification = @"MPMovieDurationAvailabl
 
 NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerControllerVolumeSetting";
 
+NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHotKeyEvent";
+
 @interface MPMoviePlayerController()<UIGestureRecognizerDelegate>
 
 @property(nonatomic,retain) UIInternalMovieView* movieView;
@@ -34,7 +36,6 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
 
 @property(nonatomic, retain) MPMovieView *normalHost;
 @property(nonatomic, retain) MPMovieView* fullscreenHost;
-
 
 @property(nonatomic,retain) NSDate* lastTapTime;
 
@@ -406,6 +407,13 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
     }
 }
 
+- (void)_windowWillExitFullScreen:(NSNotification*)n {
+    NSWindow* win = [self NSWindow];
+    if( n.object == win ) {
+        self.fullscreenHost = nil;
+        _didToggleWindowFullscreen = NO;
+    }
+}
 
 #pragma mark - constructor/destructor
 
@@ -439,9 +447,26 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
                       selector: @selector(_windowDidBecomeMain:)
                           name:NSWindowDidBecomeMainNotification
                         object:nil];
+    [defaultCenter addObserver: self
+                      selector: @selector(_windowWillExitFullScreen:)
+                          name:NSWindowWillExitFullScreenNotification
+                        object:nil];
+    [defaultCenter addObserver: self
+                      selector: @selector(_windowWillExitFullScreen:)
+                          name:NSWindowWillExitFullScreenNotification
+                        object:nil];
+    double delayInSeconds = 0.5f;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self becomeFirstResponder];
+    });
+    
 }
 
 - (void)_unregisterEvents {
+
+    [self resignFirstResponder];
+    
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
     [defaultCenter removeObserver:self name:QTMovieLoadStateDidChangeNotification object:nil];
     [defaultCenter removeObserver:self name:QTMovieDidEndNotification object:nil];
@@ -449,6 +474,25 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
     [defaultCenter removeObserver:self name:QTMovieVolumeDidChangeNotification object:nil];
     [defaultCenter removeObserver:self name:NSWindowWillCloseNotification object:nil];
     [defaultCenter removeObserver:self name:NSWindowDidBecomeMainNotification object:nil];
+}
+
+
+#pragma mark - hotkey
+
+- (BOOL)canBecomeFirstResponder {
+    return YES;
+}
+
+- (UIWindow *)_responderWindow {
+    return self.view.window;
+}
+
+- (void)keyPressed:(UIKey *)key withEvent:(UIEvent *)event {
+    
+    if( key.keyCode == 49 ) {
+        [self _playOrStopDelayed];
+    }
+    
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -621,10 +665,14 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
     QTMovie* movie = self.movie;
     float volume = [movie volume];
     float newVolume = volume;
-    if( y < -20 ) {//scroll down, volumn down.
-        newVolume -= 0.005f;
-    } else if( y > 20 ) {
-        newVolume += 0.005f;
+    
+    BOOL reserve =[[[NSUserDefaults standardUserDefaults] objectForKey:@"com.apple.swipescrolldirection"] boolValue];
+    float d = (reserve?1.0f:-1.0f);
+    
+    if( y < -15 ) {//scroll down, volumn down.
+        newVolume -= 0.005f*d;
+    } else if( y > 15 ) {
+        newVolume += 0.005f*d;
     }
     
     if (newVolume < 0 ) {
@@ -687,7 +735,26 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
     [self _toggleFullscreen];
 }
 
-#pragma mark - movie control
+
+- (void)beginSeekingBackward {
+    QTMovie* movie = self.movie;
+    NSTimeInterval currentTime = [movie playedSeconds];
+    [movie setPlayedSeconds:currentTime-10];
+    [self _checkProgress];
+}
+
+- (void)beginSeekingForward {
+    QTMovie* movie = self.movie;
+    NSTimeInterval currentTime = [movie playedSeconds];
+    [movie setPlayedSeconds:currentTime+10];
+    [self _checkProgress];
+}
+
+- (void)endSeeking {
+
+}
+
+#pragma mark - movie fullscreen
 
 - (NSWindow*)NSWindow {
     UIWindow* window = [_normalHost window];
@@ -702,7 +769,6 @@ NSString *const MPMoviePlayerControllerVolumeSetting = @"MPMoviePlayerController
     if (rate == 0) {
         [self.movie play];
     } else {
-//        [_hud showPause];
         [self.movie stop];
     }
 }

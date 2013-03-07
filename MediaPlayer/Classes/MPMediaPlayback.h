@@ -16,4 +16,8 @@
 - (void)prepareToPlay;
 - (void)stop;
 
+- (void)beginSeekingBackward;
+- (void)beginSeekingForward;
+- (void)endSeeking;
+
 @end

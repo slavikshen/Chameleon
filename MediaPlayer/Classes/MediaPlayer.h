@@ -27,5 +27,15 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+typedef enum {
+    UIEventSubtypeRemoteControlTogglePlayPause = 1,
+    UIEventSubtypeRemoteControlPreviousTrack,
+    UIEventSubtypeRemoteControlNextTrack,
+    UIEventSubtypeRemoteControlBeginSeekingBackward,
+    UIEventSubtypeRemoteControlBeginSeekingForward,
+    UIEventSubtypeRemoteControlEndSeekingForward,
+    UIEventSubtypeRemoteControlEndSeekingBackward,
+} UIEventSubtypeRemoteControl;
+
 #import "MPMusicPlayerController.h"
 #import "MPMoviePlayerController.h"

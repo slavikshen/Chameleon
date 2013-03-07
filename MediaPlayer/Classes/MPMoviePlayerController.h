@@ -77,7 +77,7 @@ extern NSString *const MPMoviePlayerControllerVolumeSetting;
 
 @class UIInternalMovieView;
 
-@interface MPMoviePlayerController : NSObject <MPMediaPlayback> 
+@interface MPMoviePlayerController : UIResponder <MPMediaPlayback>
 {
 @private
     
