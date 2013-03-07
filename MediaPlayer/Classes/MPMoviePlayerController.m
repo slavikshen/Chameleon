@@ -819,8 +819,10 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         _fullscreenHost.autoHide = [self.movie isPlaying];
         [self _setupGestures:_fullscreenHost];
         _normalHost.userInteractionEnabled = NO;
+        _controlView.fullscreenButton.selected = YES;
     } else {
         _normalHost.userInteractionEnabled = YES;
+        _controlView.fullscreenButton.selected = NO;
     }
 
     [self _showMovieView];

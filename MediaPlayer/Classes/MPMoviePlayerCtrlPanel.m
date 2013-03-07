@@ -75,8 +75,8 @@
     fullscreenButton.frame = fullscreenFrame;
     fullscreenButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
 //    fullscreenButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
-    UIImage* fullscreenIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_fullscreen.png"];
-    [fullscreenButton setImage:fullscreenIcon forState:UIControlStateNormal];
+    [fullscreenButton setImage:[UIImage QTKitImageWithName:@"chameleon_qtmovie_fullscreen.png"] forState:UIControlStateNormal];
+    [fullscreenButton setImage:[UIImage QTKitImageWithName:@"chameleon_qtmovie_unfullscreen.png"] forState:UIControlStateSelected];
     
     MPMovieProgressBar* progressBar = [[[MPMovieProgressBar alloc] initWithFrame:progressBarFrame] autorelease];
     progressBar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
