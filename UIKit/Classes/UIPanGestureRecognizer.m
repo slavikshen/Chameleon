@@ -33,6 +33,8 @@
 #import "UIEvent.h"
 #import "UIView.h"
 
+#import "UIScrollWheelGestureRecognizer.h"
+
 static UITouch *PanTouch(NSSet *touches)
 {
     for (UITouch *touch in touches) {
@@ -152,7 +154,15 @@ static UITouch *PanTouch(NSSet *touches)
 
 - (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
 {
-    if( [preventingGestureRecognizer isKindOfClass:[self class]] ) {
+    if( _delegateHas.shouldRecognizeSimultaneouslyWithGestureRecognizer ) {
+        if( ![_delegate gestureRecognizer:self shouldRecognizeSimultaneouslyWithGestureRecognizer:preventingGestureRecognizer] ) {
+            return YES;
+        }
+    }
+    
+    if( [preventingGestureRecognizer isKindOfClass:[self class]] ||
+        [preventingGestureRecognizer isKindOfClass:[UIScrollWheelGestureRecognizer class]]
+     ) {
         UIView* superview = preventingGestureRecognizer.view.superview;
         UIView* v = self.view;
         while( superview ) {
@@ -162,12 +172,12 @@ static UITouch *PanTouch(NSSet *touches)
             superview = superview.superview;
         }
         
-        UIGestureRecognizerState state = preventingGestureRecognizer.state;
-        if( UIGestureRecognizerStateBegan == state ||
-            UIGestureRecognizerStateChanged == state ||
-            UIGestureRecognizerStateEnded == state ) {
-            return YES;
-        }
+//        UIGestureRecognizerState state = preventingGestureRecognizer.state;
+//        if( UIGestureRecognizerStateBegan == state ||
+//            UIGestureRecognizerStateChanged == state ||
+//            UIGestureRecognizerStateEnded == state ) {
+//            return YES;
+//        }
     
     }
     return NO;

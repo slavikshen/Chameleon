@@ -98,7 +98,7 @@
 }
 
 - (void)dealloc {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [self _stopAutoHide];
     [super dealloc];
 }
 
@@ -106,7 +106,7 @@
     
     MPMoviePlayerHUD *s = self;
     s.hidden = NO;
-    [UIView animateWithDuration:0.25f delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^() {
+    [UIView animateWithDuration:0.25f animations:^() {
         s.alpha = 1;
     } completion:nil];
     if(autoHide) {

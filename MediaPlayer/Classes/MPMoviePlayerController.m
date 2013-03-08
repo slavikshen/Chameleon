@@ -14,6 +14,8 @@
 #import "MPMoviePlayerCtrlPanel.h"
 #import "MPMovieView.h"
 
+#define DOUBLE_CLICK_DELAY 0.64f
+
 NSString *const MPMoviePlayerPlaybackDidFinishReasonUserInfoKey = @"MPMoviePlayerPlaybackDidFinishReasonUserInfoKey";
 // notifications
 NSString *const MPMoviePlayerPlaybackStateDidChangeNotification = @"MPMoviePlayerPlaybackStateDidChangeNotification";
@@ -455,16 +457,12 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
                       selector: @selector(_windowWillExitFullScreen:)
                           name:NSWindowWillExitFullScreenNotification
                         object:nil];
-    double delayInSeconds = 0.5f;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self becomeFirstResponder];
-    });
-    
+    [self performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.5];
 }
 
 - (void)_unregisterEvents {
 
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(becomeFirstResponder) object:nil];
     [self resignFirstResponder];
     
     NSNotificationCenter* defaultCenter = [NSNotificationCenter defaultCenter];
@@ -531,6 +529,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 //
 - (void)dealloc
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_singleTapTimeout) object:nil];
     [self _stopCheckProgress];
     if( _contentURL ) {
         self.contentURL = nil;
@@ -629,7 +628,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 
 - (void)_clickMovie:(UIControl*)sender {
     if( nil == _lastTapTime ) {
-        [self performSelector:@selector(_singleTapTimeout) withObject:nil afterDelay:0.3f];
+        [self performSelector:@selector(_singleTapTimeout) withObject:nil afterDelay:DOUBLE_CLICK_DELAY];
         self.lastTapTime = [NSDate date];
     } else {
         self.lastTapTime = nil;

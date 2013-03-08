@@ -17,9 +17,9 @@
 }
 
 - (void)dealloc {
+    [self _stopAutoHide];
     [_customView release];
     [_controlView release];
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     [super dealloc];
 }
 

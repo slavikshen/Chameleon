@@ -28,6 +28,7 @@
  */
 
 #import "UIScrollWheelGestureRecognizer.h"
+#import "UIPanGestureRecognizer.h"
 #import "UIGestureRecognizerSubclass.h"
 #import "UITouch+UIPrivate.h"
 #import "UIEvent.h"
@@ -52,6 +53,36 @@
         [self setTranslation:[touch _delta] inView:touch.view];
         self.state = UIGestureRecognizerStateRecognized;
     }
+}
+
+- (BOOL)canBePreventedByGestureRecognizer:(UIGestureRecognizer *)preventingGestureRecognizer
+{
+    if( _delegateHas.shouldRecognizeSimultaneouslyWithGestureRecognizer ) {
+        if( ![_delegate gestureRecognizer:self shouldRecognizeSimultaneouslyWithGestureRecognizer:preventingGestureRecognizer] ) {
+            return YES;
+        }
+    }
+
+    if( [preventingGestureRecognizer isKindOfClass:[self class]] ||
+        [preventingGestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]] ) {
+        UIView* superview = preventingGestureRecognizer.view.superview;
+        UIView* v = self.view;
+        while( superview ) {
+            if( superview == v ) {
+                return YES;
+            }
+            superview = superview.superview;
+        }
+        
+//        UIGestureRecognizerState state = preventingGestureRecognizer.state;
+//        if( UIGestureRecognizerStateBegan == state ||
+//            UIGestureRecognizerStateChanged == state ||
+//            UIGestureRecognizerStateEnded == state ) {
+//            return YES;
+//        }
+    
+    }
+    return NO;
 }
 
 @end

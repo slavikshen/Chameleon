@@ -49,7 +49,7 @@ static const NSUInteger UIScrollViewScrollAnimationFramesPerSecond = 60;
 const float UIScrollViewDecelerationRateNormal = 0.998;
 const float UIScrollViewDecelerationRateFast = 0.99;
 
-@interface UIScrollView () <_UIScrollerDelegate>
+@interface UIScrollView () <_UIScrollerDelegate, UIGestureRecognizerDelegate>
 @end
 
 @implementation UIScrollView
@@ -85,9 +85,11 @@ const float UIScrollViewDecelerationRateFast = 0.99;
         _decelerationRate = UIScrollViewDecelerationRateNormal;
         
         _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_gestureDidChange:)];
+        _panGestureRecognizer.delegate = self;
         [self addGestureRecognizer:_panGestureRecognizer];
 
         _scrollWheelGestureRecognizer = [[UIScrollWheelGestureRecognizer alloc] initWithTarget:self action:@selector(_gestureDidChange:)];
+        _scrollWheelGestureRecognizer.delegate = self;
         [self addGestureRecognizer:_scrollWheelGestureRecognizer];
 
         _verticalScroller = [[UIScroller alloc] init];
@@ -734,6 +736,23 @@ const float UIScrollViewDecelerationRateFast = 0.99;
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@: %p; frame = (%.0f %.0f; %.0f %.0f); clipsToBounds = %@; layer = %@; contentOffset = {%.0f, %.0f}>", [self className], self, self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height, (self.clipsToBounds ? @"YES" : @"NO"), self.layer, self.contentOffset.x, self.contentOffset.y];
+}
+
+#pragma mark Gesture delegate
+
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+
+    if( ( gestureRecognizer == _panGestureRecognizer || gestureRecognizer == _scrollWheelGestureRecognizer ) &&
+        ( otherGestureRecognizer != _panGestureRecognizer && otherGestureRecognizer != _scrollWheelGestureRecognizer )
+    ) {
+    
+        if( _dragging || _decelerating || _zooming ) {
+            return NO;
+        }
+    }
+    
+    return YES;
+
 }
 
 @end
