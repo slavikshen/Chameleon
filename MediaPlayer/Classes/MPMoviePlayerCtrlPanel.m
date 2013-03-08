@@ -18,6 +18,8 @@
 
 @property(nonatomic,readwrite,assign) UIButton* playButton;
 @property(nonatomic,readwrite,assign) MPMovieProgressBar* progressBar;
+@property(nonatomic,readwrite,assign) UIButton* volumeButton;
+@property(nonatomic,readwrite,assign) MPVolumeBar* volumeBar;
 @property(nonatomic,readwrite,assign) UIButton* fullscreenButton;
 
 @property(nonatomic,readwrite,assign) UILabel* currentTimeLabel;
@@ -54,32 +56,41 @@
     CGFloat W = bounds.size.width;
     CGFloat H = bounds.size.height;
     
-    CGRect playerButtonFrame = CGRectMake(0, 0, H, H);
-    CGRect currentFrame = CGRectMake(H, 0, H*1.5f, H);
-    CGRect fullscreenFrame = CGRectMake(W-H, 0, H, H);
-    CGRect durationFrame = CGRectMake(W-H*2.5f, 0, H*1.5f, H);
-    CGRect progressBarFrame = CGRectMake(H*2.5f, 0, W-5*H, H);
+    #define BUTTON_W (H)
+    #define TIME_W (H*1.5f)
+    #define VOL_BAR_W (H*4)
+    
+    // align left
+    CGRect playerButtonFrame = CGRectMake(0, 0, BUTTON_W, H);
+    CGRect currentFrame = CGRectMake(CGRectGetMaxX(playerButtonFrame), 0, TIME_W, H);
+    // align right
+    CGRect fullscreenFrame = CGRectMake(W-BUTTON_W, 0, BUTTON_W, H);
+    CGRect volumeBarFrame = CGRectMake(CGRectGetMinX(fullscreenFrame)-VOL_BAR_W, 0, VOL_BAR_W, H);
+    CGRect durationFrame = CGRectMake(CGRectGetMinX(volumeBarFrame)-TIME_W, 0, TIME_W, H);
+    // fill the rest
+    CGRect progressBarFrame = CGRectMake(CGRectGetMaxX(currentFrame), 0, CGRectGetMinX(durationFrame) - CGRectGetMaxX(currentFrame), H);
     
     UIButton* playerButton = [UIButton buttonWithType:UIButtonTypeCustom];
     playerButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleHeight;
     playerButton.frame = playerButtonFrame;
     playerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    playerButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2);
     UIImage* playIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_play.png"];
-    UIImage* pauseIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_pause.png"];
+    UIImage* pauseIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_pauses.png"];
     [playerButton setImage:playIcon forState:UIControlStateNormal];
     [playerButton setImage:pauseIcon forState:UIControlStateSelected];
+    [self addSubview:playerButton];
     
     UIButton* fullscreenButton = [UIButton buttonWithType:UIButtonTypeCustom];
     fullscreenButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
     fullscreenButton.frame = fullscreenFrame;
     fullscreenButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
-//    fullscreenButton.imageEdgeInsets = UIEdgeInsetsMake(5, 5, 5, 5);
     [fullscreenButton setImage:[UIImage QTKitImageWithName:@"chameleon_qtmovie_fullscreen.png"] forState:UIControlStateNormal];
     [fullscreenButton setImage:[UIImage QTKitImageWithName:@"chameleon_qtmovie_unfullscreen.png"] forState:UIControlStateSelected];
-    
+    [self addSubview:fullscreenButton];
+
     MPMovieProgressBar* progressBar = [[[MPMovieProgressBar alloc] initWithFrame:progressBarFrame] autorelease];
     progressBar.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    [self addSubview:progressBar];
     
     NSString* zeroText = [self secondsToReadableString:0];
     
@@ -92,6 +103,7 @@
     currentLabel.textAlignment = UITextAlignmentCenter;
     currentLabel.backgroundColor = [UIColor clearColor];
     currentLabel.text = zeroText;
+    [self addSubview:currentLabel];
     
     UILabel* durationLabel = [[[UILabel alloc] initWithFrame:durationFrame] autorelease];
     durationLabel.textColor = [UIColor whiteColor];
@@ -102,24 +114,32 @@
     durationLabel.textAlignment= UITextAlignmentCenter;
     durationLabel.backgroundColor = [UIColor clearColor];
     durationLabel.text = zeroText;
-    
-    [MPMovieCtrlBackground addBackground:playerButton];
-    [MPMovieCtrlBackground addBackground:progressBar];
-    [MPMovieCtrlBackground addBackground:fullscreenButton];
-    [MPMovieCtrlBackground addBackground:currentLabel];
-    [MPMovieCtrlBackground addBackground:durationLabel];
-    
-    [self addSubview:playerButton];
-    [self addSubview:currentLabel];
-    [self addSubview:progressBar];
     [self addSubview:durationLabel];
-    [self addSubview:fullscreenButton];
+    
+//    UIButton* volumeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//    volumeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+//    volumeButton.frame = volumeButtonFrame;
+//    volumeButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+//    volumeButton.imageEdgeInsets = UIEdgeInsetsMake(2, 2, 2, 2);
+//    [volumeButton setImage:[UIImage QTKitImageWithName:@"chameleon_qtmovie_volume-2.png"] forState:UIControlStateNormal];
+//    [self addSubview:volumeButton];
+    
+    MPVolumeBar* volumeBar = [[[MPVolumeBar alloc] initWithFrame:volumeBarFrame] autorelease];
+    volumeBar.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
+    [self addSubview:volumeBar];
+    
+    // decorate all
+    for( UIView* v in self.subviews ) {
+        [MPMovieCtrlBackground addBackground:v];
+    }
     
     self.playButton = playerButton;
     self.currentTimeLabel = currentLabel;
     self.fullscreenButton = fullscreenButton;
     self.durationTimeLabel = durationLabel;
     self.progressBar = progressBar;
+//    self.volumeButton = volumeButton;
+    self.volumeBar = volumeBar;
 
     CAGradientLayer* layer = (CAGradientLayer*)self.layer;
     layer.colors = @[

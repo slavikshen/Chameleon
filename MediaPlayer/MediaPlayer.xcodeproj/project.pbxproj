@@ -47,6 +47,13 @@
 		74103FB416E22E0E0089690C /* chameleon_qtmovie_volume-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */; };
 		74103FB516E22E0E0089690C /* chameleon_qtmovie_volume-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */; };
 		74103FB616E22E0E0089690C /* chameleon_qtmovie_volume-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */; };
+		74A7E80216E9AF9C0044A432 /* MPVolumeBar.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A7E80016E9AF9C0044A432 /* MPVolumeBar.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		74A7E80316E9AF9C0044A432 /* MPVolumeBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 74A7E80116E9AF9C0044A432 /* MPVolumeBar.m */; };
+		74A7E80E16E9C9A20044A432 /* chameleon_qtmovie_pauses.png in Resources */ = {isa = PBXBuildFile; fileRef = 74A7E80916E9C9A20044A432 /* chameleon_qtmovie_pauses.png */; };
+		74A7E80F16E9C9A20044A432 /* chameleon_qtmovie_volume-0s.png in Resources */ = {isa = PBXBuildFile; fileRef = 74A7E80A16E9C9A20044A432 /* chameleon_qtmovie_volume-0s.png */; };
+		74A7E81016E9C9A20044A432 /* chameleon_qtmovie_volume-1s.png in Resources */ = {isa = PBXBuildFile; fileRef = 74A7E80B16E9C9A20044A432 /* chameleon_qtmovie_volume-1s.png */; };
+		74A7E81116E9C9A20044A432 /* chameleon_qtmovie_volume-2s.png in Resources */ = {isa = PBXBuildFile; fileRef = 74A7E80C16E9C9A20044A432 /* chameleon_qtmovie_volume-2s.png */; };
+		74A7E81216E9C9A20044A432 /* chameleon_qtmovie_volume-3s.png in Resources */ = {isa = PBXBuildFile; fileRef = 74A7E80D16E9C9A20044A432 /* chameleon_qtmovie_volume-3s.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -104,6 +111,13 @@
 		74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-1.png"; sourceTree = "<group>"; };
 		74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-2.png"; sourceTree = "<group>"; };
 		74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-3.png"; sourceTree = "<group>"; };
+		74A7E80016E9AF9C0044A432 /* MPVolumeBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPVolumeBar.h; sourceTree = "<group>"; };
+		74A7E80116E9AF9C0044A432 /* MPVolumeBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPVolumeBar.m; sourceTree = "<group>"; };
+		74A7E80916E9C9A20044A432 /* chameleon_qtmovie_pauses.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = chameleon_qtmovie_pauses.png; sourceTree = "<group>"; };
+		74A7E80A16E9C9A20044A432 /* chameleon_qtmovie_volume-0s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-0s.png"; sourceTree = "<group>"; };
+		74A7E80B16E9C9A20044A432 /* chameleon_qtmovie_volume-1s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-1s.png"; sourceTree = "<group>"; };
+		74A7E80C16E9C9A20044A432 /* chameleon_qtmovie_volume-2s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-2s.png"; sourceTree = "<group>"; };
+		74A7E80D16E9C9A20044A432 /* chameleon_qtmovie_volume-3s.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "chameleon_qtmovie_volume-3s.png"; sourceTree = "<group>"; };
 		8DC2EF5B0486A6940098B216 /* MediaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = MediaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -176,6 +190,8 @@
 				7407735316E7432400E92210 /* MPMoviePlayerHUD.m */,
 				7407735416E7432400E92210 /* MPMovieProgressBar.h */,
 				7407735516E7432400E92210 /* MPMovieProgressBar.m */,
+				74A7E80016E9AF9C0044A432 /* MPVolumeBar.h */,
+				74A7E80116E9AF9C0044A432 /* MPVolumeBar.m */,
 				7407735616E7432400E92210 /* MPMovieView.h */,
 				7407735716E7432400E92210 /* MPMovieView.m */,
 				7407735A16E7432400E92210 /* QTMovie+PlaybackStatusAfx.h */,
@@ -226,6 +242,11 @@
 				74103FAD16E22E0E0089690C /* chameleon_qtmovie_volume-1.png */,
 				74103FAE16E22E0E0089690C /* chameleon_qtmovie_volume-2.png */,
 				74103FAF16E22E0E0089690C /* chameleon_qtmovie_volume-3.png */,
+				74A7E80916E9C9A20044A432 /* chameleon_qtmovie_pauses.png */,
+				74A7E80A16E9C9A20044A432 /* chameleon_qtmovie_volume-0s.png */,
+				74A7E80B16E9C9A20044A432 /* chameleon_qtmovie_volume-1s.png */,
+				74A7E80C16E9C9A20044A432 /* chameleon_qtmovie_volume-2s.png */,
+				74A7E80D16E9C9A20044A432 /* chameleon_qtmovie_volume-3s.png */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -249,6 +270,7 @@
 				7407736E16E7432400E92210 /* MPMusicPlayerController.h in Headers */,
 				7407737016E7432400E92210 /* QTMovie+PlaybackStatusAfx.h in Headers */,
 				7407737416E7432400E92210 /* UIImage+QTKitImage.h in Headers */,
+				74A7E80216E9AF9C0044A432 /* MPVolumeBar.h in Headers */,
 				7407737816E78DFF00E92210 /* MPMovieCtrlBackground.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -336,6 +358,11 @@
 				7407738316E8810C00E92210 /* chameleon_qtmovie_fullscreen@2x.png in Resources */,
 				740773B416E8E0FE00E92210 /* chameleon_qtmovie_unfullscreen.png in Resources */,
 				740773B516E8E0FE00E92210 /* chameleon_qtmovie_unfullscreen@2x.png in Resources */,
+				74A7E80E16E9C9A20044A432 /* chameleon_qtmovie_pauses.png in Resources */,
+				74A7E80F16E9C9A20044A432 /* chameleon_qtmovie_volume-0s.png in Resources */,
+				74A7E81016E9C9A20044A432 /* chameleon_qtmovie_volume-1s.png in Resources */,
+				74A7E81116E9C9A20044A432 /* chameleon_qtmovie_volume-2s.png in Resources */,
+				74A7E81216E9C9A20044A432 /* chameleon_qtmovie_volume-3s.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +384,7 @@
 				7407737116E7432400E92210 /* QTMovie+PlaybackStatusAfx.m in Sources */,
 				7407737516E7432400E92210 /* UIImage+QTKitImage.m in Sources */,
 				7407737916E78DFF00E92210 /* MPMovieCtrlBackground.m in Sources */,
+				74A7E80316E9AF9C0044A432 /* MPVolumeBar.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

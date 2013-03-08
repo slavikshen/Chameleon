@@ -1,38 +1,45 @@
 //
-//  MPMovieProgressBar.m
+//  MPVolumeBar.m
 //  MediaPlayer
 //
-//  Created by Shen Slavik on 3/5/13.
+//  Created by Shen Slavik on 3/8/13.
 //
 //
 
-#import "MPMovieProgressBar.h"
+#import "MPVolumeBar.h"
+#import "UIImage+QTKitImage.h"
 #import <QuartzCore/QuartzCore.h>
 #import <UIKit/UIResponderAppKitIntegration.h>
 
-#define BAR_CORNER_R 5
-#define KNOB_SIZE 16
-#define X_INSET 11
+#define BAR_CORNER_R 3
+#define KNOB_W 10
+#define KNOB_H 16
+#define KNOB_CR 5
+#define X_INSET 3
 #define Y_INSET 11
 #define MIN_NOTIFICATION_CHANGE 0.05f
 #define BORDER_SIZE 3
-#define LIGHT_R 2
-#define BAR_HUE 0
+#define LIGHT_R 3
+#define IMG_INSET 0
 
-@interface MPMovieProgressBar()
+#define BAR_HUE 0.0f
+#define MAX_BAR_SATURATION 0.1f
+
+@interface MPVolumeBar()
 
 @property(nonatomic,assign) CALayer* slotBar;
-@property(nonatomic,assign) CALayer* loadedProgressBar;
-@property(nonatomic,assign) CALayer* playedProgressBar;
+@property(nonatomic,assign) CALayer* volBar;
 @property(nonatomic,assign) CALayer* knob;
 @property(nonatomic,assign) CAGradientLayer* knobLight;
 
 @property(nonatomic,assign) BOOL draggingKnob;
 @property(nonatomic,assign) CGFloat draggingValue;
 
+@property(nonatomic,assign) UIImageView* volumeImage;
+
 @end
 
-@implementation MPMovieProgressBar
+@implementation MPVolumeBar
 
 - (void)dealloc {
 
@@ -51,6 +58,8 @@
 
 - (void)_setup {
 
+    _volume = 1; // default value
+
     CAGradientLayer* slotBar = [CAGradientLayer layer];
     slotBar.cornerRadius = BAR_CORNER_R;
     slotBar.colors = @[
@@ -66,29 +75,21 @@
     slotBar.borderWidth = 1;
     slotBar.borderColor = [UIColor colorWithWhite:0 alpha:0.5f].CGColor;
     
-    CAGradientLayer* loadedBar = [CAGradientLayer layer];
-    loadedBar.cornerRadius = BAR_CORNER_R;
-    loadedBar.colors = @[
-        (id)[UIColor colorWithWhite:0.8f alpha:0.3f].CGColor,
-        (id)[UIColor colorWithWhite:0.9f alpha:0.3f].CGColor,
-    ];
-    loadedBar.startPoint = CGPointMake(0,0);
-    loadedBar.endPoint = CGPointMake(1,0);
     
-    CAGradientLayer* playedBar = [CAGradientLayer layer];
-    playedBar.colors = @[
-        (id)[UIColor colorWithHue:BAR_HUE saturation:0.9f brightness:0.6f alpha:1].CGColor,
-        (id)[UIColor colorWithHue:BAR_HUE saturation:1.0f brightness:0.7f alpha:1].CGColor,
+    CAGradientLayer* volBar = [CAGradientLayer layer];
+    volBar.colors = @[
+        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION-0.1f brightness:0.6f alpha:1].CGColor,
+        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION brightness:0.7f alpha:1].CGColor,
     ];
 
-    playedBar.startPoint = CGPointMake(0, 0);
-    playedBar.endPoint = CGPointMake(1,0);
-    playedBar.cornerRadius = BAR_CORNER_R;
-    playedBar.borderWidth = 1;
-    playedBar.borderColor = [UIColor colorWithWhite:0.0f alpha:0.5f].CGColor;
+    volBar.startPoint = CGPointMake(0, 0);
+    volBar.endPoint = CGPointMake(0,1);
+    volBar.cornerRadius = BAR_CORNER_R;
+    volBar.borderWidth = 1;
+    volBar.borderColor = [UIColor colorWithWhite:0.0f alpha:0.5f].CGColor;
 
     CAGradientLayer* knob = [CAGradientLayer layer];
-    knob.cornerRadius = KNOB_SIZE/2;
+    knob.cornerRadius = KNOB_CR;
     knob.colors = @[
         (id)[UIColor colorWithWhite:1.0f alpha:1.0f].CGColor,
         (id)[UIColor colorWithWhite:0.8f alpha:1.0f].CGColor,
@@ -96,14 +97,13 @@
     knob.borderWidth = 0.5f;
     knob.borderColor = [UIColor colorWithWhite:0.0f alpha:0.3f].CGColor;
     knob.shadowOffset = CGSizeMake(0, 0);
-    knob.shadowPath = [UIBezierPath bezierPathWithArcCenter:CGPointMake(KNOB_SIZE/2, KNOB_SIZE/2) radius:KNOB_SIZE/2 startAngle:0 endAngle:M_PI*2 clockwise:YES].CGPath;
+    knob.shadowPath = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, KNOB_W, KNOB_H) cornerRadius:KNOB_CR].CGPath;
     knob.shadowColor = [UIColor blackColor].CGColor;
     knob.shadowRadius = LIGHT_R;
     knob.shadowOpacity = 0.8f;
 
     CAGradientLayer* knobLight = [CAGradientLayer layer];
-    const CGFloat innerSize = KNOB_SIZE-BORDER_SIZE*2;
-    knobLight.cornerRadius = innerSize/2;
+    knobLight.cornerRadius = KNOB_CR-2;
     knobLight.colors = @[
         (id)[UIColor colorWithWhite:0.8f alpha:1].CGColor,
         (id)[UIColor colorWithWhite:0.9f alpha:1].CGColor,
@@ -111,29 +111,44 @@
     ];
     knobLight.startPoint = CGPointMake(0,0);
     knobLight.endPoint = CGPointMake(1,1);
-    knobLight.frame = CGRectMake(BORDER_SIZE/2,BORDER_SIZE/2,innerSize,innerSize);
+    knobLight.frame = CGRectMake(BORDER_SIZE/2,BORDER_SIZE/2,KNOB_W-BORDER_SIZE,KNOB_H-BORDER_SIZE);
     
-    CAShapeLayer* maskLayer = [CAShapeLayer layer];
-    UIBezierPath* path = [UIBezierPath bezierPathWithArcCenter:CGPointMake(KNOB_SIZE/2, KNOB_SIZE/2) radius:KNOB_SIZE+LIGHT_R startAngle:0 endAngle:M_PI*2 clockwise:YES];
-    [path appendPath:[UIBezierPath bezierPathWithArcCenter:CGPointMake(KNOB_SIZE/2, KNOB_SIZE/2) radius:innerSize/2-1 startAngle:0 endAngle:M_PI*2 clockwise:NO]];
-    maskLayer.path = path.CGPath;
-    knob.mask = maskLayer;
+//    CAShapeLayer* maskLayer = [CAShapeLayer layer];
+//    UIBezierPath* path = [UIBezierPath bezierPathWithRoundedRect:CGRectMake(-2, -2, KNOB_W+4, KNOB_H+4) cornerRadius:KNOB_CR];
+//    [path addArcWithCenter:CGPointMake(KNOB_W/2, KNOB_H/2) radius:(KNOB_W-BORDER_SIZE)/2-1 startAngle:0 endAngle:M_PI*2 clockwise:NO];
+//    maskLayer.path = path.CGPath;
+//    knob.mask = maskLayer;
     
     CALayer* layer = self.layer;
     
     [layer addSublayer:slotBar];
-    [layer addSublayer:loadedBar];
-    [layer addSublayer:playedBar];
+    [layer addSublayer:volBar];
 
     [layer addSublayer:knobLight];
     [layer addSublayer:knob];
     
     self.slotBar = slotBar;
-    self.loadedProgressBar = loadedBar;
-    self.playedProgressBar = playedBar;
+    self.volBar = volBar;
     self.knob = knob;
     self.knobLight = knobLight;
+    
+    UIImageView* volImage = [[[UIImageView alloc] initWithFrame:CGRectZero] autorelease];
+    volImage.contentMode = UIViewContentModeScaleAspectFit;
+    volImage.image = [UIImage QTKitImageWithName:@"chameleon_qtmovie_volume-3s.png"];
+    [self addSubview:volImage];
+    self.volumeImage = volImage;
 
+}
+
+- (void)layoutSubviews {
+
+    CGRect bounds = self.bounds;
+    CGFloat H = bounds.size.height;
+    CGFloat imgSize = H - IMG_INSET*2;
+    
+    CGRect imgFrame = CGRectMake(IMG_INSET, IMG_INSET, imgSize, imgSize);
+    _volumeImage.frame = imgFrame;
+    
 }
 
 - (void)layoutSublayersOfLayer:(CALayer *)layer {
@@ -149,30 +164,19 @@
 - (void)_layoutContent {
 
     [self _showSolt];
-    [self _showPercentLoaded:_percentLoaded];
     if( _draggingKnob ) {
-        [self _showPercentPlayed:_draggingValue];
+        [self _showVolume:_draggingValue];
     } else {
-        [self _showPercentPlayed:_percentPlayed];
+        [self _showVolume:_volume];
     }
     
 }
 
-- (void)setPercentLoaded:(CGFloat)percentLoaded {
-    _percentLoaded = percentLoaded;
+- (void)setVolume:(CGFloat)v {
+    _volume = v;
     [self setNeedsLayout];
 }
 
-- (void)setPercentPlayed:(CGFloat)percentPlayed {
-    _percentPlayed = percentPlayed;
-    
-    if( _draggingKnob ) {
-        return;
-    }
-    
-    [self setNeedsLayout];
-
-}
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
 
@@ -191,10 +195,10 @@
     //start dragging
     _draggingKnob = YES;
     _draggingValue = percent;
-    [self _showPercentLoaded:_draggingValue];
+    [self _showVolume:_draggingValue];
     
-    if( ABS(_draggingValue - _percentPlayed) > MIN_NOTIFICATION_CHANGE*2 ) {
-        [self setPercentPlayed:_draggingValue];
+    if( ABS(_draggingValue - _volume) > MIN_NOTIFICATION_CHANGE*2 ) {
+        [self setVolume:_draggingValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
@@ -215,9 +219,9 @@
             // do nothing
         } else {
             _draggingValue = percent;
-            [self _showPercentLoaded:_draggingValue];
-            if( ABS(_draggingValue - _percentPlayed) > MIN_NOTIFICATION_CHANGE ) {
-                [self setPercentPlayed:_draggingValue];
+            [self _showVolume:_draggingValue];
+            if( ABS(_draggingValue - _volume) > MIN_NOTIFICATION_CHANGE ) {
+                [self setVolume:_draggingValue];
                 [self sendActionsForControlEvents:UIControlEventValueChanged];
             }
         }
@@ -243,8 +247,8 @@
         }
         
         _draggingValue = percent;
-        [self _showPercentLoaded:_draggingValue];
-        [self setPercentPlayed:_draggingValue];
+        [self _showVolume:_draggingValue];
+        [self setVolume:_draggingValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
@@ -270,8 +274,8 @@
         }
         
         _draggingValue = percent;
-        [self _showPercentLoaded:_draggingValue];
-        [self setPercentPlayed:_draggingValue];
+        [self _showVolume:_draggingValue];
+        [self setVolume:_draggingValue];
         [self sendActionsForControlEvents:UIControlEventValueChanged];
     }
     
@@ -279,60 +283,68 @@
 
 }
 
+- (CGRect)_barFrame {
+    CGRect bounds = self.bounds;
+    // reserve space for icon
+    bounds.size.width -= bounds.size.height;
+    bounds.origin.x += bounds.size.height;
+    
+    // bar frame
+    CGRect playedFrame = bounds;
+    playedFrame.origin.y += Y_INSET;
+    playedFrame.size.height -= Y_INSET*2;
+    playedFrame.size.width -= X_INSET;
+    
+    return playedFrame;    
+}
+
 - (CGFloat)_percentValueForPosition:(CGPoint)pos {
     
-    CGRect bounds = self.bounds;
-    CGRect maxFrame = CGRectInset(bounds,X_INSET,Y_INSET);
-
+    CGRect maxFrame = [self _barFrame];
     CGFloat percent = (pos.x - maxFrame.origin.x)/maxFrame.size.width;
     
     return percent;
 
 }
 
-- (void)_showPercentPlayed:(CGFloat)p {
+- (void)_showVolume:(CGFloat)p {
 
-    CGRect bounds = self.bounds;
-    CGRect playedFrame = CGRectInset(bounds,X_INSET,Y_INSET);
-    
+    CGRect playedFrame = [self _barFrame];
     playedFrame.size.width *= p;
+    _volBar.frame = playedFrame;
     
-    _playedProgressBar.frame = playedFrame;
-    
-    CGFloat H = bounds.size.height;
-    CGFloat W = bounds.size.width;
-    
-    CGFloat cy = floorf(H/2);
+    CGFloat R = CGRectGetMaxX(playedFrame);
+    CGFloat cy = CGRectGetMidY(playedFrame);
     CGFloat cx = playedFrame.origin.x + playedFrame.size.width;
     
-    if( cx + KNOB_SIZE/2 > W ) {
-        cx = W - KNOB_SIZE/2;
-    } else if( cx < KNOB_SIZE/2 ) {
-        cx = KNOB_SIZE/2;
-    }    
+    if( cx + KNOB_W/2 > R ) {
+        cx = R - KNOB_W/2;
+    } else if( cx < KNOB_W/2 ) {
+        cx = KNOB_W/2;
+    }  
     
-    CGRect knobFrame = CGRectMake(cx-KNOB_SIZE/2, cy-KNOB_SIZE/2, KNOB_SIZE, KNOB_SIZE );
+    CGRect knobFrame = CGRectMake(cx-KNOB_W/2, cy-KNOB_H/2, KNOB_W, KNOB_H );
     CGRect lightFrame = CGRectInset(knobFrame, BORDER_SIZE, BORDER_SIZE);
     
     _knob.frame = knobFrame;
     _knobLight.frame = lightFrame;
-
-}
-
-- (void)_showPercentLoaded:(CGFloat)p {
     
-    CGRect bounds = self.bounds;
-
-    CGRect loadedFrame = CGRectInset(bounds,X_INSET,Y_INSET);
+    NSString* name = @"chameleon_qtmovie_volume-0s.png";
     
-    loadedFrame.size.width *= p;
-    _loadedProgressBar.frame = loadedFrame;
+    if( p > 0.7f ) {
+        name = @"chameleon_qtmovie_volume-3s.png";
+    } else if( p > 0.3f ) {
+        name = @"chameleon_qtmovie_volume-2s.png";
+    } else if ( p > 0.0f ) {
+        name = @"chameleon_qtmovie_volume-1s.png";
+    }
+
+    _volumeImage.image = [UIImage QTKitImageWithName:name];
 
 }
 
 - (void)_showSolt {
-    CGRect bounds = self.bounds;
-    CGRect frame = CGRectInset(bounds,X_INSET-0.5f,Y_INSET-0.5f);
+    CGRect frame = [self _barFrame];
     _slotBar.frame = frame;
 }
 
@@ -380,5 +392,7 @@
     ];
     _knob.shadowColor = [UIColor blackColor].CGColor;
 }
+
+
 
 @end

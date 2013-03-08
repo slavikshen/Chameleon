@@ -172,6 +172,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         [_controlView.progressBar addTarget:self action:@selector(_progressBarDragged:) forControlEvents:UIControlEventValueChanged];
         [_controlView.playButton addTarget:self action:@selector(_playButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
         [_controlView.fullscreenButton addTarget:self action:@selector(_toogleFullscreenButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [_controlView.volumeBar addTarget:self action:@selector(_volumeBarDragged:) forControlEvents:UIControlEventValueChanged];
         [self _showControllerView];
     }
 }
@@ -370,6 +371,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         CGFloat vol = [[NSUserDefaults standardUserDefaults] floatForKey:MPMoviePlayerControllerVolumeSetting];
         if( ABS(vol-movie.volume)>0.05 ) {
             movie.volume = vol;
+            _controlView.volumeBar.volume = vol;
         }
         
         _normalHost.autoHide = YES;
@@ -391,6 +393,8 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
     if (n.object != movie)
         return;
     CGFloat vol = movie.volume;
+    
+    _controlView.volumeBar.volume = vol;
     [[NSUserDefaults standardUserDefaults] setFloat:vol forKey:MPMoviePlayerControllerVolumeSetting];
 }
 
@@ -513,7 +517,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         _repeatMode = MPMovieRepeatModeNone;
 
         _normalHost = [[MPMovieView alloc] initWithFrame:CGRectMake(0, 0, 640, 480)];
-        [self _setupGestures:_normalHost];
+        [self _setupGestures:_normalHost fullscreen:NO];
         
         UIInternalMovieView * movieView = [[[UIInternalMovieView alloc] initWithFrame:_normalHost.bounds] autorelease];
         self.movieView = movieView;
@@ -623,15 +627,17 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 
 #pragma mark - gestures
 
-- (void)_setupGestures:(UIControl*)mView {
+- (void)_setupGestures:(UIControl*)mView fullscreen:(BOOL)isFullScreen {
 
     [mView addTarget:self action:@selector(_clickMovie:) forControlEvents:UIControlEventTouchUpInside];
     
-    UIPanGestureRecognizer* pan = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_pan:)] autorelease];
-    [mView addGestureRecognizer:pan];
-    
-    UIScrollWheelGestureRecognizer* wheel = [[[UIScrollWheelGestureRecognizer alloc] initWithTarget:self action:@selector(_pan:)] autorelease];
-    [mView addGestureRecognizer:wheel];
+    if( isFullScreen ) {
+        UIPanGestureRecognizer* pan = [[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(_pan:)] autorelease];
+        [mView addGestureRecognizer:pan];
+        
+        UIScrollWheelGestureRecognizer* wheel = [[[UIScrollWheelGestureRecognizer alloc] initWithTarget:self action:@selector(_pan:)] autorelease];
+        [mView addGestureRecognizer:wheel];
+    }
 
 }
 
@@ -735,6 +741,11 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 
 }
 
+- (void)_volumeBarDragged:(MPVolumeBar*)volumeBar {
+    CGFloat vol = volumeBar.volume;
+    [self.movie setVolume:vol];
+}
+
 - (void)_playButtonClicked:(UIButton*)b {
     [self _playOrStopDelayed];
 }
@@ -825,7 +836,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         _fullscreenHost.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         [win addSubview:_fullscreenHost];
         _fullscreenHost.autoHide = [self.movie isPlaying];
-        [self _setupGestures:_fullscreenHost];
+        [self _setupGestures:_fullscreenHost fullscreen:YES];
         _normalHost.userInteractionEnabled = NO;
         _controlView.fullscreenButton.selected = YES;
     } else {
