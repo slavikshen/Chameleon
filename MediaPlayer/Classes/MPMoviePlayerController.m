@@ -61,6 +61,15 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 @dynamic scalingMode;
 @dynamic view;
 
++ (void)initialize {
+
+    [super initialize];
+    // default volume
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{
+        MPMoviePlayerControllerVolumeSetting : @(1.0f)
+    }];
+
+}
 
 -(UIView*)view {
     return (_fullscreenHost?_fullscreenHost:_normalHost);
