@@ -1,9 +1,10 @@
 # What is different from the original Chameleon
 
 You won't see CALayer animate change when layout.
-A functional media player, with basic control ui. (Maybe you don't like the red progress bar)
-Some gesture conflict resolve mechanism that you couold use pan gesture within another one.
 
+A functional media player, with basic control ui. (Maybe you don't like the red progress bar)
+
+Some gesture conflict resolve mechanism that you couold use pan gesture within another one.
 
 
 # Chameleon
