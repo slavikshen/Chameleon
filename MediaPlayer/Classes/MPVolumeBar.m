@@ -78,8 +78,8 @@
     
     CAGradientLayer* volBar = [CAGradientLayer layer];
     volBar.colors = @[
-        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION-0.1f brightness:0.6f alpha:1].CGColor,
-        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION brightness:0.7f alpha:1].CGColor,
+        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION-0.1f brightness:0.6f alpha:0.5f].CGColor,
+        (id)[UIColor colorWithHue:BAR_HUE saturation:MAX_BAR_SATURATION brightness:0.7f alpha:0.5f].CGColor,
     ];
 
     volBar.startPoint = CGPointMake(0, 0);

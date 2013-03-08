@@ -466,10 +466,6 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
                       selector: @selector(_windowWillExitFullScreen:)
                           name:NSWindowWillExitFullScreenNotification
                         object:nil];
-    [defaultCenter addObserver: self
-                      selector: @selector(_windowWillExitFullScreen:)
-                          name:NSWindowWillExitFullScreenNotification
-                        object:nil];
     [self performSelector:@selector(becomeFirstResponder) withObject:nil afterDelay:0.5];
 }
 
@@ -485,6 +481,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
     [defaultCenter removeObserver:self name:QTMovieVolumeDidChangeNotification object:nil];
     [defaultCenter removeObserver:self name:NSWindowWillCloseNotification object:nil];
     [defaultCenter removeObserver:self name:NSWindowDidBecomeMainNotification object:nil];
+    [defaultCenter removeObserver:self name:NSWindowWillExitFullScreenNotification object:nil];
 }
 
 
@@ -584,6 +581,8 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
         case MPMoviePlaybackStateSeekingBackward:
         break;
         }
+        
+        [[NSNotificationCenter defaultCenter] postNotificationName:MPMoviePlayerPlaybackStateDidChangeNotification object:self];
     }
 
 }
