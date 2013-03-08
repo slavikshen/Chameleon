@@ -1,3 +1,11 @@
+# What is different from the original Chameleon
+
+You won't see CALayer animate change when layout.
+A functional media player, with basic control ui. (Maybe you don't like the red progress bar)
+Some gesture conflict resolve mechanism that you couold use pan gesture within another one.
+
+
+
 # Chameleon
 
 Chameleon is a port of Apple's UIKit (and some minimal related frameworks) to Mac OS X. It is meant to be as much of a drop-in replacement for the real UIKit as possible. It also adapts some iOS user interface conventions to the Mac (such as UIAlertView being represented by NSAlert) so that apps built using Chameleon have as much chance as possible of feeling at home on the desktop with relatively little porting effort.
