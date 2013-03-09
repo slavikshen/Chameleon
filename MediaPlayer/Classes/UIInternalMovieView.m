@@ -23,6 +23,7 @@
     self = [super initWithFrame:frame];
     if( self ) {
         self.userInteractionEnabled = NO;
+        self.scalingMode = MPMovieScalingModeAspectFit;
     }
     
     return self;
@@ -54,6 +55,22 @@
 {
     self.movie = nil;
     [super dealloc];
+}
+
+- (void)setScalingMode:(MPMovieScalingMode)scalingMode {
+
+    if( _scalingMode != scalingMode ) {
+        _scalingMode = scalingMode;
+        
+        NSString* gravity = kCAGravityResizeAspect;
+        if( MPMovieScalingModeFill == _scalingMode ) {
+            gravity = kCAGravityResizeAspectFill;
+        } else if( MPMovieScalingModeFill == _scalingMode ) {
+            gravity = kCAGravityResize;
+        }
+        self.layer.contentsGravity = gravity;
+    }
+
 }
 
 @end
