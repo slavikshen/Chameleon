@@ -34,13 +34,6 @@
 
 @implementation MPMovieProgressBar
 
-- (void)dealloc {
-
-    [self _stopResetHighlight];
-    [super dealloc];
-
-}
-
 - (id)initWithFrame:(CGRect)frame {
 
     self = [super initWithFrame:frame];
@@ -54,17 +47,17 @@
     CAGradientLayer* slotBar = [CAGradientLayer layer];
     slotBar.cornerRadius = BAR_CORNER_R;
     slotBar.colors = @[
-        (id)[UIColor colorWithWhite:0 alpha:0.8f].CGColor,
-        (id)[UIColor colorWithWhite:0 alpha:0.5f].CGColor,
-        (id)[UIColor colorWithWhite:0 alpha:0.8f].CGColor,
+        (id)[UIColor colorWithWhite:0.1 alpha:0.8f].CGColor,
+        (id)[UIColor colorWithWhite:0.25 alpha:0.5f].CGColor,
+        (id)[UIColor colorWithWhite:0.3 alpha:0.8f].CGColor,
     ];
     slotBar.locations = @[
         @(0.1f),
-        @(0.9f),
+        @(0.8f),
         @(1.0f)
     ];
     slotBar.borderWidth = 1;
-    slotBar.borderColor = [UIColor colorWithWhite:0 alpha:0.5f].CGColor;
+    slotBar.borderColor = [UIColor colorWithWhite:0 alpha:0.8f].CGColor;
     
     CAGradientLayer* loadedBar = [CAGradientLayer layer];
     loadedBar.cornerRadius = BAR_CORNER_R;
@@ -345,24 +338,12 @@
 }
 
 - (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
-
-    [super mouseExitedView:exited enteredView:entered withEvent:event];
-    
-    if( exited == self ) {
-        [self _stopResetHighlight];
-    } else {
-        [self performSelector:@selector(_resetHighlight) withObject:nil afterDelay:1];
+    if( exited == self || ![entered isDescendantOfView:self] ) {
+        [self _resetHighlight];
     }
-
-}
-
-- (void)_stopResetHighlight {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_resetHighlight) object:nil];
 }
 
 - (void)_showHightlight {
-
-    [self _stopResetHighlight];
 
     _knobLight.colors = @[
         (id)[UIColor colorWithHue:BAR_HUE saturation:0.7f brightness:0.8f alpha:0.8f].CGColor,

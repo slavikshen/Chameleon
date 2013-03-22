@@ -10,7 +10,7 @@
 #import <AppKit/AppKit.h>
 #import <UIKit/UIResponderAppKitIntegration.h>
 
-#define AUTO_HIDE_INTERVAL 3
+#define AUTO_HIDE_INTERVAL 1
 
 @implementation MPMovieView {
     BOOL _animating;
@@ -102,16 +102,19 @@
 - (void)mouseMoved:(CGPoint)delta withEvent:(UIEvent *)event {
 
     [super mouseMoved:delta withEvent:event];
-
     if( !_animating ) {
         [self _stopAutoHide];
-        
-        [self _showControl];    
+        [self _showControl];
+    }
+}
+
+- (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
+    if( exited == self || ![entered isDescendantOfView:self] ) {
         if( _autoHide ) {
+            [self _stopAutoHide];
             [self _startAutoHide];
         }
     }
-
 }
 
 @end

@@ -156,7 +156,8 @@ extern CGFloat _UITableViewDefaultRowHeight;
 - (UIView *)contentView
 {
     if (!_contentView) {
-        _contentView = [[UIView alloc] init];
+        _contentView = [[UIView alloc] initWithFrame:self.bounds];
+        _contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         [self addSubview:_contentView];
         [self layoutIfNeeded];
     }
