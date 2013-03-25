@@ -33,6 +33,8 @@
 #import "UIApplication.h"
 #import "UIControlAction.h"
 
+#import <UIKit/UIResponderAppKitIntegration.h>
+
 @implementation UIControl
 @synthesize tracking=_tracking, touchInside=_touchInside, selected=_selected, enabled=_enabled, highlighted=_highlighted;
 @synthesize contentHorizontalAlignment=_contentHorizontalAlignment, contentVerticalAlignment=_contentVerticalAlignment;
@@ -261,6 +263,15 @@
     if (_selected)		state |= UIControlStateSelected;
 
     return state;
+}
+
+- (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
+
+    [super mouseExitedView:exited enteredView:entered withEvent:event];
+    if( entered == self ) {
+        [self sendActionsForControlEvents:UIControlEventMouseEnter];
+    }
+
 }
 
 @end

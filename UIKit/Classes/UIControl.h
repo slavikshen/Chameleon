@@ -47,6 +47,8 @@ enum {
     UIControlEventEditingDidEnd       = 1 << 18,
     UIControlEventEditingDidEndOnExit = 1 << 19,
     
+    UIControlEventMouseEnter          = 1 << 20,
+    
     UIControlEventAllTouchEvents      = 0x00000FFF,
     UIControlEventAllEditingEvents    = 0x000F0000,
     UIControlEventApplicationReserved = 0x0F000000,

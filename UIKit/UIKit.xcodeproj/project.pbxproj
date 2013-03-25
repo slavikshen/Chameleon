@@ -215,7 +215,7 @@
 		14A726DA1213303400648C9B /* UIScreen+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726B71213303400648C9B /* UIScreen+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		14A726DC1213303400648C9B /* UITableViewCell+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726B91213303400648C9B /* UITableViewCell+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		14A726DD1213303400648C9B /* UITouch+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726BA1213303400648C9B /* UITouch+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
-		14A726DE1213303400648C9B /* UIView+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726BB1213303400648C9B /* UIView+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
+		14A726DE1213303400648C9B /* UIView+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726BB1213303400648C9B /* UIView+UIPrivate.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		14A726DF1213303400648C9B /* UIViewController+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726BC1213303400648C9B /* UIViewController+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		14A726E01213303400648C9B /* UIWindow+UIPrivate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14A726BD1213303400648C9B /* UIWindow+UIPrivate.h */; settings = {ATTRIBUTES = (Private, ); }; };
 		14BF16DB12E621EB007DAA01 /* UIViewBlockAnimationDelegate.h in Headers */ = {isa = PBXBuildFile; fileRef = 14BF16D912E621EB007DAA01 /* UIViewBlockAnimationDelegate.h */; settings = {ATTRIBUTES = (Private, ); }; };
@@ -984,6 +984,7 @@
 				789CF898133A3CD500250AB4 /* NSFetchedResultsController.h in Headers */,
 				78CB48D9133AB922008636DA /* UISlider.h in Headers */,
 				78CB48B4133AA8AF008636DA /* UISegmentedControl.h in Headers */,
+				14A726DE1213303400648C9B /* UIView+UIPrivate.h in Headers */,
 				14CC840611EFA8AF005988CC /* UIRoundedRectButton.h in Headers */,
 				78CB48BC133AADD0008636DA /* UIPickerView.h in Headers */,
 				14A726D21213303400648C9B /* UIApplication+UIPrivate.h in Headers */,
@@ -993,7 +994,6 @@
 				14A726DA1213303400648C9B /* UIScreen+UIPrivate.h in Headers */,
 				14A726DC1213303400648C9B /* UITableViewCell+UIPrivate.h in Headers */,
 				14A726DD1213303400648C9B /* UITouch+UIPrivate.h in Headers */,
-				14A726DE1213303400648C9B /* UIView+UIPrivate.h in Headers */,
 				14A726DF1213303400648C9B /* UIViewController+UIPrivate.h in Headers */,
 				78CB48B0133AA536008636DA /* UITabBarItem.h in Headers */,
 				14A726E01213303400648C9B /* UIWindow+UIPrivate.h in Headers */,
