@@ -522,6 +522,7 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
     self = [super init];
     if (self) 
     {
+        _autoHideControl = YES;
         _controlStyle = MPMovieControlStyleDefault;
         _repeatMode = MPMovieRepeatModeNone;
 
