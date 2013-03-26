@@ -355,6 +355,18 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
                                                         object: self];
 }
 
+- (void)setAutoHideControl:(BOOL)autoHideControl {
+
+    if( _autoHideControl != autoHideControl ) {
+        _autoHideControl = autoHideControl;
+        if( [self.movie isPlaying] ) {
+            _normalHost.autoHide = _autoHideControl;
+            _fullscreenHost.autoHide = _autoHideControl;
+        }
+    }
+
+}
+
 - (void)_playRateDidChanged:(NSNotification*)n {
 
     QTMovie* movie = self.movie;
@@ -374,8 +386,8 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
             _controlView.volumeBar.volume = vol;
         }
         
-        _normalHost.autoHide = YES;
-        _fullscreenHost.autoHide = YES;
+        _normalHost.autoHide = _autoHideControl;
+        _fullscreenHost.autoHide = _autoHideControl;
         
     } else {
         if( [movie percentPlayed] < 1 ) {

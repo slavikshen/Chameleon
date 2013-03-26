@@ -47,9 +47,9 @@
     CAGradientLayer* slotBar = [CAGradientLayer layer];
     slotBar.cornerRadius = BAR_CORNER_R;
     slotBar.colors = @[
-        (id)[UIColor colorWithWhite:0.1 alpha:0.8f].CGColor,
-        (id)[UIColor colorWithWhite:0.25 alpha:0.5f].CGColor,
-        (id)[UIColor colorWithWhite:0.3 alpha:0.8f].CGColor,
+        (id)[UIColor colorWithWhite:0.10f alpha:0.8f].CGColor,
+        (id)[UIColor colorWithWhite:0.25f alpha:0.5f].CGColor,
+        (id)[UIColor colorWithWhite:0.30f alpha:0.8f].CGColor,
     ];
     slotBar.locations = @[
         @(0.1f),
@@ -57,16 +57,18 @@
         @(1.0f)
     ];
     slotBar.borderWidth = 1;
-    slotBar.borderColor = [UIColor colorWithWhite:0 alpha:0.8f].CGColor;
+    slotBar.borderColor = [UIColor colorWithWhite:0.3f alpha:0.1f].CGColor;
     
     CAGradientLayer* loadedBar = [CAGradientLayer layer];
     loadedBar.cornerRadius = BAR_CORNER_R;
     loadedBar.colors = @[
-        (id)[UIColor colorWithWhite:0.8f alpha:0.3f].CGColor,
-        (id)[UIColor colorWithWhite:0.9f alpha:0.3f].CGColor,
+        (id)[UIColor colorWithWhite:0.7f alpha:0.2f].CGColor,
+        (id)[UIColor colorWithWhite:0.8f alpha:0.2f].CGColor,
     ];
     loadedBar.startPoint = CGPointMake(0,0);
     loadedBar.endPoint = CGPointMake(1,0);
+    loadedBar.borderWidth = 1;
+    loadedBar.borderColor = [UIColor colorWithWhite:0.0f alpha:0.2f].CGColor;
     
     CAGradientLayer* playedBar = [CAGradientLayer layer];
     playedBar.colors = @[

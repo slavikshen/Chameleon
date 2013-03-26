@@ -104,6 +104,7 @@ extern NSString *const MPMoviePlayerControllerVolumeSetting;
 
 // Indicates if a movie should automatically start playback when it is likely to finish uninterrupted based on e.g. network conditions. Defaults to YES.
 @property(nonatomic) BOOL shouldAutoplay;
+@property(nonatomic) BOOL autoHideControl;
 
 @property(nonatomic, readonly) NSTimeInterval duration;
 @property(nonatomic) MPMovieScalingMode scalingMode;

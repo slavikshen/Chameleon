@@ -67,8 +67,7 @@
         @(1.0f)
     ];
     slotBar.borderWidth = 1;
-    slotBar.borderColor = [UIColor colorWithWhite:0 alpha:0.5f].CGColor;
-    
+    slotBar.borderColor = [UIColor colorWithWhite:0.3 alpha:0.1f].CGColor;
     
     CAGradientLayer* volBar = [CAGradientLayer layer];
     volBar.colors = @[

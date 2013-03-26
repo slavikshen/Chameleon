@@ -35,7 +35,12 @@
 
 #import <UIKit/UIResponderAppKitIntegration.h>
 
-@implementation UIControl
+@implementation UIControl {
+    
+    BOOL _mouseDidEntered;
+    
+}
+
 @synthesize tracking=_tracking, touchInside=_touchInside, selected=_selected, enabled=_enabled, highlighted=_highlighted;
 @synthesize contentHorizontalAlignment=_contentHorizontalAlignment, contentVerticalAlignment=_contentVerticalAlignment;
 
@@ -265,11 +270,25 @@
     return state;
 }
 
+- (void)mouseMoved:(CGPoint)delta withEvent:(UIEvent *)event {
+
+    if( !_mouseDidEntered ) {
+        _mouseDidEntered = YES;
+        [self sendActionsForControlEvents:UIControlEventMouseEnter];
+    }
+
+}
+
 - (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
 
     [super mouseExitedView:exited enteredView:entered withEvent:event];
-    if( entered == self ) {
+    if( !_mouseDidEntered && entered == self ) {
+        _mouseDidEntered = YES;
         [self sendActionsForControlEvents:UIControlEventMouseEnter];
+    } else if( _mouseDidEntered ) {
+        if( [self isDescendantOfView:exited] ) {
+            _mouseDidEntered = NO;
+        }
     }
 
 }
