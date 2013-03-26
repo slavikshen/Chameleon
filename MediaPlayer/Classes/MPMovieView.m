@@ -105,11 +105,12 @@
     if( !_animating ) {
         [self _stopAutoHide];
         [self _showControl];
+        [self _startAutoHide];
     }
 }
 
 - (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
-    if( exited == self || ![entered isDescendantOfView:self] ) {
+    if( [self isDescendantOfView:exited] || ![entered isDescendantOfView:self] ) {
         if( _autoHide ) {
             [self _stopAutoHide];
             [self _startAutoHide];

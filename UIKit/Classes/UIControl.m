@@ -36,7 +36,8 @@
 #import <UIKit/UIResponderAppKitIntegration.h>
 
 @implementation UIControl {
-    
+            
+    NSUInteger _mouseEnterTargetCount;
     BOOL _mouseDidEntered;
     
 }
@@ -69,6 +70,10 @@
     controlAction.controlEvents = controlEvents;
     [_registeredActions addObject:controlAction];
     [controlAction release];
+    
+    if( controlEvents == UIControlEventMouseEnter ) {
+        _mouseEnterTargetCount++;
+    }
 }
 
 - (void)removeTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents
@@ -82,6 +87,15 @@
     }
     
     [_registeredActions removeObjectsInArray:discard];
+    if( controlEvents == UIControlEventMouseEnter ) {
+        NSUInteger count = discard.count;
+        if( _mouseEnterTargetCount > count) {
+            _mouseEnterTargetCount -= count;
+        } else {
+            _mouseEnterTargetCount = 0;
+        }
+    }
+
     [discard release];
 }
 
@@ -272,22 +286,25 @@
 
 - (void)mouseMoved:(CGPoint)delta withEvent:(UIEvent *)event {
 
-    if( !_mouseDidEntered ) {
-        _mouseDidEntered = YES;
-        [self sendActionsForControlEvents:UIControlEventMouseEnter];
+    if( _mouseEnterTargetCount ) {
+        if( !_mouseDidEntered ) {
+            _mouseDidEntered = YES;
+            [self sendActionsForControlEvents:UIControlEventMouseEnter];
+        }
     }
 
 }
 
 - (void)mouseExitedView:(UIView *)exited enteredView:(UIView *)entered withEvent:(UIEvent *)event {
 
-    [super mouseExitedView:exited enteredView:entered withEvent:event];
-    if( !_mouseDidEntered && entered == self ) {
-        _mouseDidEntered = YES;
-        [self sendActionsForControlEvents:UIControlEventMouseEnter];
-    } else if( _mouseDidEntered ) {
-        if( [self isDescendantOfView:exited] ) {
-            _mouseDidEntered = NO;
+    if( _mouseEnterTargetCount ) {
+        if( !_mouseDidEntered && [entered isDescendantOfView:self] ) {
+            _mouseDidEntered = YES;
+            [self sendActionsForControlEvents:UIControlEventMouseEnter];
+        } else if( _mouseDidEntered ) {
+            if( [self isDescendantOfView:exited] ) {
+                _mouseDidEntered = NO;
+            }
         }
     }
 
