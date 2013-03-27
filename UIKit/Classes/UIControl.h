@@ -93,6 +93,10 @@ typedef enum {
     BOOL _highlighted;
     UIControlContentHorizontalAlignment _contentHorizontalAlignment;
     UIControlContentVerticalAlignment _contentVerticalAlignment;
+    
+    NSUInteger _mouseEnterTargetCount;
+    BOOL _mouseDidEntered;
+
 }
 
 - (void)addTarget:(id)target action:(SEL)action forControlEvents:(UIControlEvents)controlEvents;

@@ -13,6 +13,7 @@
 #import "MPMovie.h"
 #import "MPMoviePlayerCtrlPanel.h"
 #import "MPMovieView.h"
+#import "UIImage+QTKitImage.h"
 
 #define DOUBLE_CLICK_DELAY 0.64f
 
@@ -579,15 +580,29 @@ NSString *const MPMoviePlayerControllerHotKeyEvent = @"MPMoviePlayerControllerHo
 
         switch( playbackState ) {
         case MPMoviePlaybackStateStopped:
+        {
             [_hud hide];
+            UIImage* playIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_reload.png"];
+            [_controlView.playButton setImage:playIcon forState:UIControlStateNormal];
+//            _controlView.playButton.selected = NO;
+        }
         break;
         case MPMoviePlaybackStatePaused:
+        {
             [_hud showPause];
-            _controlView.playButton.selected = NO;
+            UIImage* playIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_play.png"];
+            [_controlView.playButton setImage:playIcon forState:UIControlStateNormal];
+//            _controlView.playButton.selected = NO;
+        }
         break;
         case MPMoviePlaybackStatePlaying:
+        {
             [_hud hide];
-            _controlView.playButton.selected = YES;
+            UIImage* playIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_pause.png"];
+            [_controlView.playButton setImage:playIcon forState:UIControlStateNormal];
+
+//            _controlView.playButton.selected = YES;
+        }
         break;
         case MPMoviePlaybackStateInterrupted:
         case MPMoviePlaybackStateSeekingForward:
