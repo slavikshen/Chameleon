@@ -35,12 +35,7 @@
 
 #import <UIKit/UIResponderAppKitIntegration.h>
 
-@implementation UIControl {
-            
-    NSUInteger _mouseEnterTargetCount;
-    BOOL _mouseDidEntered;
-    
-}
+@implementation UIControl
 
 @synthesize tracking=_tracking, touchInside=_touchInside, selected=_selected, enabled=_enabled, highlighted=_highlighted;
 @synthesize contentHorizontalAlignment=_contentHorizontalAlignment, contentVerticalAlignment=_contentVerticalAlignment;
