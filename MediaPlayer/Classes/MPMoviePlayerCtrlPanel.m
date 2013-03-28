@@ -75,9 +75,9 @@
     playerButton.frame = playerButtonFrame;
     playerButton.imageView.contentMode = UIViewContentModeScaleAspectFit;
     UIImage* playIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_play.png"];
-    UIImage* pauseIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_pauses.png"];
+//    UIImage* pauseIcon = [UIImage QTKitImageWithName:@"chameleon_qtmovie_pauses.png"];
     [playerButton setImage:playIcon forState:UIControlStateNormal];
-    [playerButton setImage:pauseIcon forState:UIControlStateSelected];
+//    [playerButton setImage:pauseIcon forState:UIControlStateSelected];
     [self addSubview:playerButton];
     
     UIButton* fullscreenButton = [UIButton buttonWithType:UIButtonTypeCustom];
